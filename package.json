@@ -1,0 +1,25 @@
+{
+  "name": "wrapdactyl",
+  "version": "0.0.4",
+  "description": "a pterodactyl wrapper",
+  "main": "src/index.js",
+  "bin": "src/index.js",
+  "keywords": [
+    "pterodactyl",
+    "wrapper"
+  ],
+  "author": "JustArtiom",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.27.2"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustArtiom/wrapdactyl.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JustArtiom/wrapdactyl/issues"
+  },
+  "homepage": "https://github.com/JustArtiom/wrapdactyl#readme"
+}
