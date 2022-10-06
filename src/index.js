@@ -104,7 +104,12 @@ module.exports = class {
         account: {
             fetch: () => require('./client/account/fetch')(this.config, this.lastcheck),
             updateEmail: (email, password) => require('./client/account/updateEmail')(this.config, this.lastcheck, this.users.cache, email, password),
-            updatePassword: (oldpassword, newpassword) => require('./client/account/updatePassword')(this.config, this.lastcheck, oldpassword, newpassword)
+            updatePassword: (current_password, new_password) => require('./client/account/updatePassword')(this.config, this.lastcheck, current_password, new_password),
+            apikeys: {
+                fetch: () => require('./client/account/apikeys/fetch')(this.config, this.lastcheck),
+                create: (description, allowed_ips) => require('./client/account/apikeys/create')(this.config, this.lastcheck, description, allowed_ips),
+                delete: (id) => require('./client/account/apikeys/delete')(this.config, this.lastcheck, id)
+            }
         }
     }
 

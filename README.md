@@ -82,10 +82,10 @@ ptero.on('checkUpdate', (data) => {
 ⏩ ptero.client.account.twofa.enable('code')
 ⏩ ptero.client.account.twofa.disable('password')
 ✅ ptero.client.account.updateEmail('newemail@gmail.com', 'password')
-ptero.client.account.updatePassword({current: '' newpassword: ''})
-ptero.client.account.apikeys.fetch()
-ptero.client.account.apikeys.create('description', ['127.0.0.1'])
-ptero.client.account.apikeys.delete('apikey')
+✅ ptero.client.account.updatePassword('currentpassword', 'newpassword')
+✅ ptero.client.account.apikeys.fetch()
+✅ ptero.client.account.apikeys.create('description', ['127.0.0.1'])
+✅ ptero.client.account.apikeys.delete('apikey')
 ```
 ```js
 ptero.client.servers.fetchAll()

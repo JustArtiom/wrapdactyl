@@ -1,11 +1,11 @@
-const axios = require('axios');
+const axios =  require('axios')
 
 module.exports = async (config, lastcheck) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
     if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
     if(!lastcheck.client) throw 'Wrapdactyl - client api key not configured or wrong'
 
-    let data = await axios.get(config.url() + '/api/client/account', {
+    let data = await axios.get(config.url() + '/api/client/account/api-keys', {
         timeout: 5000,
         headers: {
             "Authorization": "Bearer "+ config.client(),
@@ -27,5 +27,5 @@ module.exports = async (config, lastcheck) => {
     })
     if(data.error) return data
 
-    return data.data.attributes
+    return data.data.data
 }
