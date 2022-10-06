@@ -100,8 +100,9 @@ module.exports = class {
     lastcheck = null
 
     client = {
+        permissions: () => require('./client/permissions')(this.config, this.lastcheck),
         account: {
-            permissions: () => require('./client/account/permissions')(this.config, this.lastcheck)
+            
         }
     }
 
