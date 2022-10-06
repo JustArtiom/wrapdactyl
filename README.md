@@ -72,6 +72,9 @@ ptero.on('checkUpdate', (data) => {
 
 # ⚠️ To-Do List
 
+✅ - completed
+⏩ - skipped for later
+
 **For client api key:** 
 ```js
 ✅ ptero.client.permissions()
