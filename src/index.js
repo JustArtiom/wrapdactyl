@@ -110,6 +110,10 @@ module.exports = class {
                 create: (description, allowed_ips) => require('./client/account/apikeys/create')(this.config, this.lastcheck, description, allowed_ips),
                 delete: (id) => require('./client/account/apikeys/delete')(this.config, this.lastcheck, id)
             }
+        },
+        servers: {
+            fetchAll: () => require('./client/servers/fetchAll')(this.config, this.lastcheck),
+            fetch: (uuid) => require('./client/servers/fetch')(this.config, this.lastcheck, uuid)
         }
     }
 
