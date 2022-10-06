@@ -78,11 +78,11 @@ ptero.on('checkUpdate', (data) => {
 ```
 ```js
 ✅ ptero.client.account.fetch()
-ptero.client.account.twofa.fetch()
-ptero.client.account.twofa.enable('code')
-ptero.client.account.twofa.disable('password')
-ptero.client.account.email.update({email: 'newemail@gmail.com', password: 'password'})
-ptero.client.account.password.update({current: '' newpassword: ''})
+⏩ ptero.client.account.twofa.fetch()
+⏩ ptero.client.account.twofa.enable('code')
+⏩ ptero.client.account.twofa.disable('password')
+✅ ptero.client.account.updateEmail({email: 'newemail@gmail.com', password: 'password'})
+ptero.client.account.updatePassword({current: '' newpassword: ''})
 ptero.client.account.apikeys.fetch()
 ptero.client.account.apikeys.create('description', ['127.0.0.1'])
 ptero.client.account.apikeys.delete('apikey')
@@ -96,7 +96,7 @@ ptero.client.servers.resources.fetch('server id')
 ptero.client.servers.sendCommand('server id', 'command')
 ptero.client.servers.power('server id', 'start/stop/restart/kill')
 
-// a lot more about client servers here, that im gonna temporarily skip
+// ⏩ a lot more about client servers here, that im gonna temporarily skip
 
 ptero.client.servers.rename('server id', 'name')
 ptero.client.servers.reinstall('server id')
