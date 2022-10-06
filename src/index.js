@@ -103,7 +103,8 @@ module.exports = class {
         permissions: () => require('./client/permissions')(this.config, this.lastcheck),
         account: {
             fetch: () => require('./client/account/fetch')(this.config, this.lastcheck),
-            updateEmail: ({email, password}) => require('./client/account/updateEmail')(this.config, this.lastcheck, this.users.cache, email, password)
+            updateEmail: (email, password) => require('./client/account/updateEmail')(this.config, this.lastcheck, this.users.cache, email, password),
+            updatePassword: (oldpassword, newpassword) => require('./client/account/updatePassword')(this.config, this.lastcheck, oldpassword, newpassword)
         }
     }
 

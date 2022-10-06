@@ -81,7 +81,7 @@ ptero.on('checkUpdate', (data) => {
 ⏩ ptero.client.account.twofa.fetch()
 ⏩ ptero.client.account.twofa.enable('code')
 ⏩ ptero.client.account.twofa.disable('password')
-✅ ptero.client.account.updateEmail({email: 'newemail@gmail.com', password: 'password'})
+✅ ptero.client.account.updateEmail('newemail@gmail.com', 'password')
 ptero.client.account.updatePassword({current: '' newpassword: ''})
 ptero.client.account.apikeys.fetch()
 ptero.client.account.apikeys.create('description', ['127.0.0.1'])
