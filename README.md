@@ -77,7 +77,7 @@ ptero.on('checkUpdate', (data) => {
 ✅ ptero.client.permissions()
 ```
 ```js
-ptero.client.account.fetch()
+✅ ptero.client.account.fetch()
 ptero.client.account.twofa.fetch()
 ptero.client.account.twofa.enable('code')
 ptero.client.account.twofa.disable('password')

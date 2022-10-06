@@ -102,7 +102,7 @@ module.exports = class {
     client = {
         permissions: () => require('./client/permissions')(this.config, this.lastcheck),
         account: {
-            
+            fetch: () => require('./client/account/fetch')(this.config, this.lastcheck)
         }
     }
 
