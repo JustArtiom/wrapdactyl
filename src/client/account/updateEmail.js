@@ -19,10 +19,17 @@ module.exports = async (config, lastcheck, usercahce, email, password) => {
             "Content-Type": "application/json"
         }
     }).catch((err) => {
+        if(err?.response?.status < 500) return {
+            error: true,
+            panelError: true,
+            status: err.response.status,
+            message: err.response.data.errors
+        }
+
         return {
             error: true,
-            status: err.response.status,
-            messages: err.response.data.errors
+            panelError: false,
+            message: err
         }
     })
     if(data.error) return data
