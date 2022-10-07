@@ -66,7 +66,7 @@ module.exports = class extends EventEmitter {
         return true
     }
 
-    close = (reason) => {
+    close = () => {
         this.ws.close();
         this.ready=false
         this.ws=undefined;
