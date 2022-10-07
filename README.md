@@ -97,7 +97,7 @@ ptero.on('checkUpdate', (data) => {
 ✅ server = new ptero.client.servers.websocket(
     await ptero.client.servers.consoleDetails("server id"))
 
-ptero.client.servers.resources.fetch('server id')
+✅ ptero.client.servers.resources('server id')
 ptero.client.servers.sendCommand('server id', 'command')
 ptero.client.servers.power('server id', 'start/stop/restart/kill')
 
