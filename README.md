@@ -98,13 +98,13 @@ ptero.on('checkUpdate', (data) => {
     await ptero.client.servers.consoleDetails("server id"))
 
 ✅ ptero.client.servers.resources('server id')
-ptero.client.servers.sendCommand('server id', 'command')
-ptero.client.servers.power('server id', 'start/stop/restart/kill')
+✅ ptero.client.servers.sendCommand('server id', 'command')
+✅ ptero.client.servers.power('server id', 'start/stop/restart/kill')
 
 // ⏩ a lot more about client servers here, that im gonna temporarily skip
 
-ptero.client.servers.rename('server id', 'name')
-ptero.client.servers.reinstall('server id')
+✅ ptero.client.servers.rename('server id', 'name')
+✅ ptero.client.servers.reinstall('server id')
 ```
 **For application api key:**
 

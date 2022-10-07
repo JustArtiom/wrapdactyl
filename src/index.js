@@ -118,6 +118,9 @@ module.exports = class {
             websocket: require('./client/servers/websocket'),
             resources: (uuid) => require('./client/servers/resources')(this.config, this.lastcheck, uuid),
             sendCommand: (uuid, command) => require('./client/servers/sendCommand')(this.config, this.lastcheck, uuid, command),
+            power: (uuid, power) => require('./client/servers/power')(this.config, this.lastcheck, uuid, power),
+            rename: (uuid, name) => require('./client/servers/rename')(this.config, this.lastcheck, uuid, name),
+            reinstall: (uuid) => require('./client/servers/reinstall')(this.config, this.lastcheck, uuid),
         }
     }
 
