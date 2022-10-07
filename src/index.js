@@ -109,6 +109,11 @@ module.exports = class {
                 fetch: () => require('./client/account/apikeys/fetch')(this.config, this.lastcheck),
                 create: (description, allowed_ips) => require('./client/account/apikeys/create')(this.config, this.lastcheck, description, allowed_ips),
                 delete: (id) => require('./client/account/apikeys/delete')(this.config, this.lastcheck, id)
+            },
+            twofa: {
+                fetch: () => require('./client/account/twofa/fetch')(this.config, this.lastcheck),
+                enable: (password, code) => require('./client/account/twofa/enable')(this.config, this.lastcheck, password, code),
+                disable: (password) => require('./client/account/twofa/disable')(this.config, this.lastcheck, password)
             }
         },
         servers: {

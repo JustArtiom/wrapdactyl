@@ -82,7 +82,7 @@ ptero.on('checkUpdate', (data) => {
 ```js
 ✅ ptero.client.account.fetch()
 ⏩ ptero.client.account.twofa.fetch()
-⏩ ptero.client.account.twofa.enable('code')
+⏩ ptero.client.account.twofa.enable('password', 'code')
 ⏩ ptero.client.account.twofa.disable('password')
 ✅ ptero.client.account.updateEmail('newemail@gmail.com', 'password')
 ✅ ptero.client.account.updatePassword('currentpassword', 'newpassword')
@@ -107,6 +107,7 @@ ptero.on('checkUpdate', (data) => {
 ✅ ptero.client.servers.reinstall('server id')
 ```
 **For application api key:**
+
 
 
 # ⚙️ Options
