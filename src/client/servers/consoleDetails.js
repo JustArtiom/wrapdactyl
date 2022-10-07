@@ -8,7 +8,7 @@ module.exports = async (config, lastcheck, uuid) => {
     if(!uuid) throw 'Wrapdactyl - The uuid of the server must be provided'
     if(uuid.split('-').length > 1) uuid = uuid.split('-')[0]
 
-    let data = await axios.get(config.url() + '/api/client/servers/'+uuid, {
+    let data = await axios.get(config.url() + '/api/client/servers/'+uuid+'/websocket', {
         timeout: 5000,
         headers: {
             "Authorization": "Bearer "+ config.client(),
@@ -30,5 +30,9 @@ module.exports = async (config, lastcheck, uuid) => {
     })
     if(data.error) return data
 
-    return data.data
+    return {
+        origin: config.url(),
+        token: data.data.data.token,
+        socket: data.data.data.socket,
+    }
 }
