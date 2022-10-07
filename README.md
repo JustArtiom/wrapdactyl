@@ -1,5 +1,7 @@
 # ⚠️ Project in progress... ⚠️
 
+`ptero.client` - its half completed. not all functionsavailable
+
 # 🐦 Wrapdactyl
 Do you know that moment when your scripts are very messy and full of api calls to your pterodactyl panel? Well this is not a problem anymore because wrapdactyl is here. Wrapdactyl is a pterodactyl wrapper which allows you to make api calls by running simple functions. [More info about options here](https://github.com/JustArtiom/wrapdactyl#%EF%B8%8F-options)
 
@@ -81,9 +83,9 @@ ptero.on('checkUpdate', (data) => {
 ```
 ```js
 ✅ ptero.client.account.fetch()
-⏩ ptero.client.account.twofa.fetch()
-⏩ ptero.client.account.twofa.enable('password', 'code')
-⏩ ptero.client.account.twofa.disable('password')
+✅ ptero.client.account.twofa.fetch()
+✅ ptero.client.account.twofa.enable('password', 'code')
+✅ ptero.client.account.twofa.disable('password')
 ✅ ptero.client.account.updateEmail('newemail@gmail.com', 'password')
 ✅ ptero.client.account.updatePassword('currentpassword', 'newpassword')
 ✅ ptero.client.account.apikeys.fetch()
