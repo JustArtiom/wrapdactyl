@@ -195,17 +195,25 @@ server.on('connected', async () => {
     console.log('connected')
 
     // What you can send to the server
-    server.power('start');
+    server.power('start'); // start / restart / stop / kill
     server.send('command');
     server.request.logs();
     server.request.stats();
+    
+    // Close the websocket
+    server.close()
 });
 server.on('status', (status) => console.log(status));
 server.on('stats', (stats) => console.log(stats));
 server.on('console', (message) => console.log(message));
 server.on('deamonError', (message) => console.log(message));
 
-// Error Events
+server.on('expiring', (auth) => {
+    console.log('Token is about to expire');
+    // send a new token to keep the connection alive
+    // A new token can be requested by running ptero.client.servers.consoleDetails
+    auth("new token");
+});
 server.on('expired', () => console.log('Token had expired'));
 server.on('disconnected', () => console.log('server disconnected'));
 ```
