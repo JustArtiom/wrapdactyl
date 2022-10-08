@@ -167,6 +167,28 @@ Retrieves information about the specified server
 ptero.client.servers.fetch('server id', { egg: true, subusers: true });
 ```
 
+**Console details:**  
+Generates credentials to establish a websocket
+- Value 1 - Required - Server id
+```js
+ptero.client.servers.consoleDetails('server id')
+```
+
+**Server websocket:**  
+Connect to the server websocket
+
+- Value 1 - Required - Object - Details to establish the websocket  
+      *These can be requested from `ptero.client.servers.consoleDetails`*
+    - Origin - Required - The panel URL
+    - Token - Required - The token for authentication
+    - Socket - Required - The actual websocket destination
+
+```js
+let websocket_details = await ptero.client.servers.consoleDetails("server id");
+let server = new ptero.client.servers.websocket(websocket_details);
+
+
+```
 
 # ⚠️ To-Do List
 
