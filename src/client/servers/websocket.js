@@ -18,7 +18,7 @@ module.exports = class extends EventEmitter {
         });
 
         this.ws.on('open', () => {
-            this.ws.send(JSON.stringify({"event":"auth","args":[this.token]}));
+            this.auth(this.token)
         })
 
         this.ws.on('close', () => {
@@ -47,6 +47,8 @@ module.exports = class extends EventEmitter {
                 this.emit('console', message.args.join('\n'))
             } else if (message.event === 'daemon error') {
                 this.emit('deamonError', message.args[0])
+            } else if (message.event === 'token expiring') {
+                this.emit('expiring', this.auth);
             } else if(message.event === 'token expired') {
                 this.emit('expired');
                 this.close()
@@ -75,6 +77,12 @@ module.exports = class extends EventEmitter {
         return true
     }
 
+    auth = (token) => {
+        if(!token) return null
+        this.ws.send(JSON.stringify({"event":"auth","args":[token]}));
+        return true
+    }
+
     power = (power) => {
         if(!['start', 'stop', 'restart', 'kill'].includes(power?.toLowerCase())) throw 'invalid power state... start/stop/restart/kill'
         if(!this.ws || !this.ready) return 'Connection not ready'
@@ -83,6 +91,7 @@ module.exports = class extends EventEmitter {
     }
 
     close = () => {
+        if(!this.ws) return
         this.ws.close();
         this.ready=false
         this.ws=undefined;
