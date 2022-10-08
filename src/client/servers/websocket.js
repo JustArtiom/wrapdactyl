@@ -44,7 +44,9 @@ module.exports = class extends EventEmitter {
             }
             else if(message.event === 'console output') {
                 message.args = message.args.map(x => x.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, ''))
-                this.emit('console', message.args[0])
+                this.emit('console', message.args.join('\n'))
+            } else if (message.event === 'daemon error') {
+                this.emit('deamonError', message.args[0])
             } else if(message.event === 'token expired') {
                 this.emit('expired');
                 this.close()
@@ -52,6 +54,19 @@ module.exports = class extends EventEmitter {
         });
     }
     
+    request = {
+        stats: () => {
+            if(!this.ws || !this.ready) return 'Connection not ready'
+            this.ws.send(JSON.stringify({"event":"send stats","args":[null]}))
+            return true
+        },
+        logs: () => {
+            if(!this.ws || !this.ready) return 'Connection not ready'
+            this.ws.send(JSON.stringify({"event":"send logs","args":[null]}))
+            return true
+        }
+    }
+
     send = (command) => {
         command = command?.toString()
         if(!command.length) return 'Command is invalid'
