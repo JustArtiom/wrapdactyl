@@ -47,6 +47,7 @@ module.exports = class extends EventEmitter {
                 this.emit('console', message.args[0])
             } else if(message.event === 'token expired') {
                 this.emit('expired');
+                this.close()
             }
         });
     }
