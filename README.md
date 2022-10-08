@@ -187,7 +187,27 @@ Connect to the server websocket
 let websocket_details = await ptero.client.servers.consoleDetails("server id");
 let server = new ptero.client.servers.websocket(websocket_details);
 
+// Connect to the server
+server.connect();
 
+// What you can listen to
+server.on('connected', async () => {
+    console.log('connected')
+
+    // What you can send to the server
+    server.power('start');
+    server.send('command');
+    server.request.logs();
+    server.request.stats();
+});
+server.on('status', (status) => console.log(status));
+server.on('stats', (stats) => console.log(stats));
+server.on('console', (message) => console.log(message));
+server.on('deamonError', (message) => console.log(message));
+
+// Error Events
+server.on('expired', () => console.log('Token had expired'));
+server.on('disconnected', () => console.log('server disconnected'));
 ```
 
 # ⚠️ To-Do List
