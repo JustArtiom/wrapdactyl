@@ -72,7 +72,7 @@ ptero.on('checkUpdate', (data) => {
 });
 ```
 
-# 📕 Client Object
+# 📕 Client Functions
 
 **Show permissions:**  
 Retries all available permissions
@@ -167,7 +167,7 @@ Retrieves information about the specified server
 ptero.client.servers.fetch('server id', { egg: true, subusers: true });
 ```
 
-**Console details:**  
+**Server Console details:**  
 Generates credentials to establish a websocket
 - Value 1 - Required - Server id
 ```js
@@ -217,6 +217,52 @@ server.on('expiring', (auth) => {
 server.on('expired', () => console.log('Token had expired'));
 server.on('disconnected', () => console.log('server disconnected'));
 ```
+
+**Server Resource usage:**  
+Retrieves resource utilization of the specified server  
+- Value 1 - Required - Server id
+```js
+ptero.client.servers.resources('server id')
+```
+
+**Send command to the server:**  
+Sends a command to the server. The server must be online to send a command to it.
+- Value 1 - Required - Server id
+- Value 2 - Required - Command string
+```js
+ptero.client.servers.sendCommand('server id', 'command')
+```
+
+**Change server power state:**  
+Sends a power signal to the server  
+- Value 1 - Required - Server id
+- Value 2 - Required - Can be only: start, restart, stop, kill
+```js
+ptero.client.servers.power('server id', 'start')
+```
+#
+```
+⏩ Skipped a lot of functions for the future versions.
+```
+#
+
+**Rename server:**  
+Renames the server  
+- Value 1 - Required - Server id
+- Value 2 - Required - New Name of the server
+```js
+ptero.client.servers.rename('server id', 'name')
+```
+
+**Reinstall server:**  
+Reinstalls the server
+- Value 1 - Required - Server id
+```js
+ptero.client.servers.reinstall('server id')
+```
+
+# 📙 Application functions
+
 
 # ⚠️ To-Do List
 
