@@ -290,6 +290,27 @@ Retrieves the specified user
 ptero.users.fetch(1, {servers: true})
 ``` 
 
+**Create user:**  
+Creates a new user
+- Valude 1 - Required - Object
+    - username - Required
+    - email - Required
+    - first_name - Required
+    - last_name - Required
+    - password - Required
+    - root_admin - nullable boolean
+```js
+ptero.users.create({
+    username: 'username',
+    email: 'email@mail.com',
+    first_name: 'test',
+    last_name: 'test',
+    password: 'test',
+    root_admin: false
+})
+```
+
+
 # ⚠️ To-Do List
 
 ✅ - completed  

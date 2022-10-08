@@ -133,6 +133,7 @@ module.exports = class {
         cache: new Map(),
         fetchAll: (options) => require('./users/fetchAll')(this.config, this.lastcheck, options),
         fetch: (id, options) => require('./users/fetch')(this.config, this.lastcheck, id, options),
+        create: (data) => require('./users/create')(this.config, this.lastcheck, data),
     }
     servers = {
         cache: new Map(),
