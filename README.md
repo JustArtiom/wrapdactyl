@@ -292,23 +292,49 @@ ptero.users.fetch(1, {servers: true})
 
 **Create user:**  
 Creates a new user
-- Valude 1 - Required - Object
-    - username - Required
-    - email - Required
-    - first_name - Required
-    - last_name - Required
-    - password - Required
-    - root_admin - nullable boolean
+- Value 1 - Required - Object
+    - username - Required - string
+    - email - Required - string
+    - first_name - Required - string
+    - last_name - Required - string
+    - password - nullable - string
+    - root_admin - nullable - boolean
+    - language - nullable - string
 ```js
 ptero.users.create({
     username: 'username',
     email: 'email@mail.com',
-    first_name: 'test',
-    last_name: 'test',
-    password: 'test',
+    first_name: 'firstname',
+    last_name: 'lastname',
+    password: 'your_password',
     root_admin: false
 })
 ```
+
+**Update user:**  
+Updates the user information
+- Value 1 - Required - The id of the user
+- Value 2 - Required - Object
+    - username - Required - string
+    - email - Required - string
+    - first_name - Required - string
+    - last_name - Required - string
+    - password - nullable - string
+    - root_admin - nullable - boolean
+    - language - nullable - string
+```js
+ptero.users.update(1, {
+    username: 'newusername',
+    email: 'newemail@email.com',
+    first_name: 'firstname',
+    last_name: 'lastname',
+    password: 'newPassword'
+})
+```
+
+
+
+
 
 
 # ⚠️ To-Do List

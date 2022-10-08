@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-module.exports = async (config, lastcheck, user) => {
+module.exports = async (config, lastcheck, usercahce, user) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
     if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
     if(!lastcheck.application) throw 'Wrapdactyl - Application api key not configured or wrong'
@@ -34,6 +34,10 @@ module.exports = async (config, lastcheck, user) => {
         }
     })
     if(data.error) return data
+
+    if(usercahce.size){
+        usercahce.set(data.data.attributes.id, data.data)
+    }
 
     return data.data.attributes
 }
