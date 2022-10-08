@@ -269,40 +269,9 @@ ptero.client.servers.reinstall('server id')
 ✅ - completed  
 ⏩ - skipped for later
 
-**For client api key:** 
+**Application functions:**  
 ```js
-✅ ptero.client.permissions() // Retries all available permissions
 ```
-```js
-✅ ptero.client.account.fetch()
-✅ ptero.client.account.twofa.fetch()
-✅ ptero.client.account.twofa.enable('password', 'code')
-✅ ptero.client.account.twofa.disable('password')
-✅ ptero.client.account.updateEmail('newemail@gmail.com', 'password')
-✅ ptero.client.account.updatePassword('currentpassword', 'newpassword')
-✅ ptero.client.account.apikeys.fetch()
-✅ ptero.client.account.apikeys.create('description', ['127.0.0.1'])
-✅ ptero.client.account.apikeys.delete('apikey')
-```
-```js
-✅ ptero.client.servers.fetchAll()
-✅ ptero.client.servers.fetch('server id')
-✅ ptero.client.servers.consoleDetails('server id')
-✅ server = new ptero.client.servers.websocket(
-    await ptero.client.servers.consoleDetails("server id"))
-
-✅ ptero.client.servers.resources('server id')
-✅ ptero.client.servers.sendCommand('server id', 'command')
-✅ ptero.client.servers.power('server id', 'start/stop/restart/kill')
-
-// ⏩ a lot more about client servers here, that im gonna temporarily skip
-
-✅ ptero.client.servers.rename('server id', 'name')
-✅ ptero.client.servers.reinstall('server id')
-```
-**For application api key:**
-
-
 
 # ⚙️ Options
 soon
