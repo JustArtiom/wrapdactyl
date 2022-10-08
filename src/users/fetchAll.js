@@ -1,7 +1,15 @@
 const axios = require('axios')
 
-module.exports = async (config) => {
-    if(!config.application()) throw new Error('Wrapdactyl - You need to configure application api key to run this function')
+module.exports = async (config, lastcheck, options) => {
+    if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
+    if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
+    if(!lastcheck.application) throw 'Wrapdactyl - Application api key not configured or wrong' 
+
+    let optionsarr = []
+    if(options){
+        if(options.servers) optionsarr.push('servers')
+    }
+
     let arrayusers = [];
     
     let pagination = (await axios.get(config.url() + '/api/application/users', {
@@ -13,7 +21,7 @@ module.exports = async (config) => {
     }).catch(() => {}))?.data?.meta?.pagination
 
     for(let page = 1; page <= pagination.total_pages; page++){
-        await axios.get(config.url() + '/api/application/users?page='+page, {
+        await axios.get(config.url() + '/api/application/users?page=' + page + `${optionsarr.length ? `&include=${optionsarr.join(',')}` : ''}`, {
             timeout: 5000, 
             headers: {
                 "Authorization": "Bearer "+ config.application(),

@@ -273,15 +273,27 @@ ptero.client.servers.reinstall('server id')
 
 # 📙 Application functions
 
+**List users:**  
+Retrieves all users
+- Value 1 - nullAble - Options object
+    - servers: true - List of servers the user has access to
+```js
+ptero.users.fetchAll({servers: true})
+```
+
+**User details:**  
+Retrieves the specified user
+- Value 1 - Required - Number or string id of the user
+- Value 2 - nullAble - Object
+    - servers: true - List of servers the user has access to
+```js
+ptero.users.fetch(1, {servers: true})
+``` 
 
 # ⚠️ To-Do List
 
 ✅ - completed  
 ⏩ - skipped for later
-
-**Application functions:**  
-```js
-```
 
 # ⚙️ Options
 soon

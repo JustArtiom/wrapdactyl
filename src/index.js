@@ -131,11 +131,12 @@ module.exports = class {
 
     users = {
         cache: new Map(),
-        fetchAll: () => require('./users/fetchAll')(this.config)
+        fetchAll: (options) => require('./users/fetchAll')(this.config, this.lastcheck, options),
+        fetch: (id, options) => require('./users/fetch')(this.config, this.lastcheck, id, options),
     }
     servers = {
         cache: new Map(),
-        fetchAll: () => require('./servers/fetchAll')(this.config)
+        fetchAll: () => require('./servers/fetchAll')(this.config, this.lastcheck)
     }
 
     on = (name, callback) => {
