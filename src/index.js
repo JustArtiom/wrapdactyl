@@ -118,7 +118,7 @@ module.exports = class {
         },
         servers: {
             fetchAll: () => require('./client/servers/fetchAll')(this.config, this.lastcheck),
-            fetch: (uuid) => require('./client/servers/fetch')(this.config, this.lastcheck, uuid),
+            fetch: (uuid, options) => require('./client/servers/fetch')(this.config, this.lastcheck, uuid, options),
             consoleDetails: (uuid) => require('./client/servers/consoleDetails')(this.config, this.lastcheck, uuid),
             websocket: require('./client/servers/websocket'),
             resources: (uuid) => require('./client/servers/resources')(this.config, this.lastcheck, uuid),

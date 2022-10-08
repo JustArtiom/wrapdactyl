@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-module.exports = async (config, lastcheck, uuid) => {
+module.exports = async (config, lastcheck, uuid, options) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
     if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
     if(!lastcheck.client) throw 'Wrapdactyl - client api key not configured or wrong'
@@ -8,7 +8,13 @@ module.exports = async (config, lastcheck, uuid) => {
     if(!uuid) throw 'Wrapdactyl - The uuid of the server must be provided'
     if(uuid.split('-').length > 1) uuid = uuid.split('-')[0]
 
-    let data = await axios.get(config.url() + '/api/client/servers/'+uuid, {
+    let optionsarr = []
+    if(options){
+        if(options.egg) optionsarr.push('egg')
+        if(options.subusers) optionsarr.push('subusers')
+    }
+
+    let data = await axios.get(config.url() + '/api/client/servers/' + uuid + `${optionsarr.length !== 0 ? `?include=${optionsarr.join(',')}` : ''}`, {
         timeout: 5000,
         headers: {
             "Authorization": "Bearer "+ config.client(),
