@@ -1,6 +1,6 @@
 # ⚠️ Project in progress... ⚠️
 
-`ptero.client` - its half completed. not all functionsavailable  
+`ptero.client` - its half completed. not all functions available  
 `ptero.servers` - in development...  
 `ptero.users` - in development...
 
