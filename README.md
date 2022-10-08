@@ -217,8 +217,17 @@ server.on('disconnected', () => console.log('server disconnected'));
 // Connect to the server
 server.connect().catch(err => console.log(err));
 ```
-The function `server.connect()` is an async function that returns "true" if connected and throws an error in case it couldnt connect to the websocket. **It is preferable to put this function at the bottom, before you listen to events if you are going to await the function** otherwise it wont triger the event "connected".
+The function `server.connect()` is an async function that returns "true" if connected and throws an error in case it couldnt connect to the websocket. **It is preferable to put this function at the bottom, before you listen to events if you are going to await the function** otherwise it wont triger the event "connected".  
+Here is an example how await connect function could help:
+```js
+server.on('connected', () => console.log('Server connected'))
 
+await server.connect();
+server.power('start');
+server.send('command');
+server.request.logs();
+server.request.stats();
+```
 **Server Resource usage:**  
 Retrieves resource utilization of the specified server  
 - Value 1 - Required - Server id
