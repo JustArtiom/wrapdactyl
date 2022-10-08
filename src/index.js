@@ -135,6 +135,7 @@ module.exports = class {
         fetch: (id, options) => require('./users/fetch')(this.config, this.lastcheck, id, options),
         create: (userdata) => require('./users/create')(this.config, this.lastcheck, this.users.cache, userdata),
         update: (id, userdata) => require('./users/update')(this.config, this.lastcheck, this.users.cache, id, userdata),
+        delete: (id) => require('./users/delete')(this.config, this.lastcheck, this.users.cache, id),
     }
     servers = {
         cache: new Map(),

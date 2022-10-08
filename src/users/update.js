@@ -34,7 +34,7 @@ module.exports = async (config, lastcheck, usercahce, id, userdata) => {
     })
     if(data.error) return data
 
-    if(usercahce.size){
+    if(usercahce.has(data.data.attributes.id)){
         let userdata = usercahce.get(data.data.attributes.id)
         userdata.attributes = data.data.attributes
         usercahce.set(data.data.attributes.id, userdata)

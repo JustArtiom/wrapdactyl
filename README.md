@@ -323,7 +323,7 @@ Updates the user information
     - root_admin - nullable - boolean
     - language - nullable - string
 ```js
-ptero.users.update(1, {
+ptero.users.update(2, {
     username: 'newusername',
     email: 'newemail@email.com',
     first_name: 'firstname',
@@ -331,6 +331,17 @@ ptero.users.update(1, {
     password: 'newPassword'
 })
 ```
+
+**Delete user:**  
+Deletes the specified user
+- Value 1 - Required - The id of the user you want to delte
+
+```js
+ptero.users.delete(2)
+```
+
+
+
 
 
 
