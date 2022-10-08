@@ -187,9 +187,6 @@ Connect to the server websocket
 let websocket_details = await ptero.client.servers.consoleDetails("server id");
 let server = new ptero.client.servers.websocket(websocket_details);
 
-// Connect to the server
-server.connect();
-
 // What you can listen to
 server.on('connected', async () => {
     console.log('connected')
@@ -216,7 +213,11 @@ server.on('expiring', (auth) => {
 });
 server.on('expired', () => console.log('Token had expired'));
 server.on('disconnected', () => console.log('server disconnected'));
+
+// Connect to the server
+server.connect().catch(err => console.log(err));
 ```
+The function `server.connect()` is an async function that returns "true" if connected and throws an error in case it couldnt connect to the websocket. **It is preferable to put this function at the bottom, before you listen to events if you are going to await the function** otherwise it wont triger the event "connected".
 
 **Server Resource usage:**  
 Retrieves resource utilization of the specified server  

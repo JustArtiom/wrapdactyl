@@ -10,7 +10,7 @@ module.exports = class extends EventEmitter {
         this.socket = config.socket
     }
 
-    connect = async () => {
+    connect = () => new Promise((resolve, reject) => {
         if(this.ws) this.close()
 
         this.ws = new WebSocket(this.socket, {
@@ -18,22 +18,27 @@ module.exports = class extends EventEmitter {
         });
 
         this.ws.on('open', () => {
-            this.auth(this.token)
+            this.auth(this.token);
         })
 
         this.ws.on('close', () => {
             this.close()
         })
 
-        this.ws.on('error', () => {
-            this.close()
+        this.ws.on('error', (err) => {
+            if(ws) this.ws.close();
+            this.ready=false
+            this.ws=undefined;
+            reject(err);
         })
 
-        this.ws.on('message', (data) => {
+        this.ws.on('message', async (data) => {
             let message = JSON.parse(data.toString())
             if(message.event === 'auth success') {
+                resolve(true);
+
                 this.ready = true;
-                this.emit('connected');
+                this.emit('connected')
             }
             else if(message.event === "status") {
                 this.emit('status', message.args[0])
@@ -54,8 +59,8 @@ module.exports = class extends EventEmitter {
                 this.close()
             }
         });
-    }
-    
+    });
+
     request = {
         stats: () => {
             if(!this.ws || !this.ready) return 'Connection not ready'
