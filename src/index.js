@@ -141,6 +141,9 @@ module.exports = class {
         cache: new Map(),
         fetchAll: () => require('./servers/fetchAll')(this.config, this.lastcheck)
     }
+    nodes = {
+        
+    }
 
     on = (name, callback) => {
         if(name && callback) events.push({name, callback})
