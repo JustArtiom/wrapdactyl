@@ -14,7 +14,7 @@
 
 
 # 🐦 Wrapdactyl
-Do you know that moment when your scripts are very messy and full of api calls to your Pterodactyl panel? Well this is not a problem anymore because wrapdactyl is here. Wrapdactyl is a Pterodactyl wrapper which allows you to make api calls by running simple functions. [More info about options here](#%EF%B8%8F-options)
+Do you know that moment when your scripts are very messy and full of api calls to your Pterodactyl panel? Well this is not a problem anymore because wrapdactyl is here. Wrapdactyl is a Pterodactyl wrapper which allows you to make api calls by running simple functions. [More info about options here](#%EF%B8%8F-options).
 
 # 📥 Installation:
 ```
@@ -46,7 +46,7 @@ ptero.check().then(data => {
 })
 ```
 The option `checkInterval` offers you the opotunity to check the configuration in an interval of time  
-Now the wrapper is ready to use! have fun with it 👍
+Now the wrapper is ready to use! have fun with it. 👍
 
 # 💻 How Cache Works:
 *⚠️Warning: This function spams your panel api*  
