@@ -404,6 +404,8 @@ Deletes the specified user
 ptero.users.delete(2)
 ```
 
+#
+
 **List nodes:**  
 Retrieves a list of all nodes
 - Value 1 - nullable - Options Object 
@@ -556,6 +558,8 @@ Deletes the specified allocation
 ```js
 ptero.nodes.allocations.delete(1, 1)
 ```
+
+#
 
 
 
