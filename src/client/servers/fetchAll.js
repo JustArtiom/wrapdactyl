@@ -2,7 +2,8 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    
+    if(lastcheck.client === null) throw 'Wrapdactyl - Client api key not configured'
+
     let data = await axios.get(config.url() + '/api/client', {
         timeout: 5000, 
         headers: { 

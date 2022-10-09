@@ -2,6 +2,8 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, nodeid) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
+    
     if(!nodeid) throw 'Wrapdactyl - id of the node must be present'
 
     const { scheme, fqdn, daemon_listen, ...errorcase } = await require('../nodes/fetch')(config, lastcheck, nodeid)

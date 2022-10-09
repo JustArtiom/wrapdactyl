@@ -2,6 +2,7 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, nodeid, allocationid) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
     
     if(!nodeid) throw 'Wrapdactyl - id of the node must be present'
     if(!allocationid) throw 'Wrapdactyl - allocation id must be present'

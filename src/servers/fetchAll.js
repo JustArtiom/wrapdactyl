@@ -2,7 +2,8 @@ const axios = require('axios')
 
 module.exports = async (config, lastcheck) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
+
     let arrayservers = [];
     
     let pagination = await axios.get(config.url() + '/api/application/servers', {

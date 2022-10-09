@@ -2,6 +2,7 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, usercahce, user) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
 
     if(!user || typeof user !== 'object') throw 'Wrapdactyl - Data of the new user must be present'
 

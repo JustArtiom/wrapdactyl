@@ -2,6 +2,7 @@ const axios = require('axios')
 
 module.exports = async (config, lastcheck, options) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
 
     let optionsarr = []
     if(options){

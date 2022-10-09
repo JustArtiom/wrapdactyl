@@ -2,6 +2,8 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, configuration) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
+    
     if(!configuration || typeof configuration !== 'object') throw 'Wrapdactyl - configuration must be a present object'
 
     let data = await axios.post(config.url() + '/api/application/nodes', configuration, {

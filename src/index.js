@@ -155,7 +155,10 @@ module.exports = class {
             delete: (nodeid, allocationid) => require('./nodes/allocations/delete')(this.config, this.lastcheck, nodeid, allocationid)
         }
     }
-    wings = (id) => require('./wings')(this.config, this.lastcheck, id)
+    wings = (id) => require('./wings')(this.config, this.lastcheck, id),
+    locations = {
+        
+    }
 
     on = (name, callback) => {
         if(name && callback) events.push({name, callback})

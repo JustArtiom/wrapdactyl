@@ -2,7 +2,8 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, id) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    
+    if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
+
     if(!id) throw 'Wrapdactyl - id of the node must be present'
 
     let data = await axios.delete(config.url() + '/api/application/nodes/' + id, {
