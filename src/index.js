@@ -173,6 +173,10 @@ module.exports = class {
         update: (locationid, configuration) => require('./locations/update')(this.config, this.lastcheck, locationid, configuration),
         delete: (locationid) => require('./locations/delete')(this.config, this.lastcheck, locationid)
     }
+    nests = {
+        fetchAll: (options) => require('./nests/fetchAll')(this.config, this.lastcheck, options),
+        fetch: (nestid, options) => require('./nests/fetch')(this.config, this.lastcheck, nestid, options)
+    }
 
     on = (name, callback) => {
         if(name && callback) events.push({name, callback})

@@ -10,6 +10,7 @@
 `ptero.locations` - completed  
 `ptero.servers` - main functions completed  
 `ptero.nests` - in development...  
+`ptero.eggs` - in development...
 
 
 
@@ -806,9 +807,32 @@ ptero.servers.forceDelete(1)
 
 #
 
+**List nests:**  
+Retrieves all nests
+- Value 1 - Nullable - Options object 
+    - eggs - List of eggs in the nest
+    - servers - List of servers in the nest
+```js
+ptero.nests.fetchAll({
+    eggs: true, 
+    servers: true
+})
+```
 
+**Nest details:**  
+Retrieves the specified nests
+- Value 1 - Required - Nest id
+- Value 2 - Nullable - Options object 
+    - eggs - List of eggs in the nest
+    - servers - List of servers in the nest
+```js
+ptero.nests.fetch(1, {
+    eggs: true, 
+    servers: true,
+})
+```
 
-
+#
 
 
 # ⚠️ To-Do List
