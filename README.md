@@ -618,8 +618,42 @@ Updates the specified location
 ptero.locations.delete(1)
 ```
 
+#
 
+**List servers:**  
+Retrieves all servers
+```js
+ptero.servers.fetchAll()
+```
 
+**Server details:**  
+Retrieves the specified servervv
+- Value 1 - Required - server id
+- Value 2 - Nullable - Options object
+    - allocation - List of allocations assigned to the server
+    - user - Information about the server owner
+    - subusers - List of users added to the server
+    - pack - Information about the server pack
+    - nest - Information about the server's egg nest
+    - egg - Information about the server's egg
+    - variables - List of server variables
+    - location - Information about server's node location
+    - node - Information about the server's node
+    - databases - List of databases on the server
+```js
+ptero.servers.fetch(1, {
+    allocation: true,
+    user: true,
+    subusers: true,
+    pack: true,
+    nest: true,
+    egg: true,
+    variables: true, 
+    location: true,
+    node: true,
+    databases: true
+})
+```
 
 
 # ⚠️ To-Do List
