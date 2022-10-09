@@ -38,7 +38,20 @@ module.exports = async (config, lastcheck) => {
                 "Authorization": "Bearer "+ config.client(),
                 "Content-Type": "application/json"
             }
-        }).then(data => servers = servers.concat(data.data.data))
+        }).then(data => servers = servers.concat(data.data.data)).catch((err) => {
+            if(err?.response?.status < 500) return servers = {
+                error: true,
+                panelError: true,
+                status: err.response.status,
+                message: err.response.data.errors
+            }
+    
+            return servers = {
+                error: true,
+                panelError: false,
+                message: err
+            }
+        })
     }
 
     return servers

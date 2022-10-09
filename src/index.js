@@ -142,7 +142,8 @@ module.exports = class {
         fetchAll: () => require('./servers/fetchAll')(this.config, this.lastcheck)
     }
     nodes = {
-        
+        cache: new Map(),
+        fetchAll: (options) => require('./nodes/fetchAll')(this.config, this.lastcheck, options)
     }
 
     on = (name, callback) => {

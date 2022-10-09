@@ -348,6 +348,22 @@ Deletes the specified user
 ptero.users.delete(2)
 ```
 
+**List nodes:**  
+Retrieves a list of all nodes
+- Value 1 - nullable - Object options 
+    - allocations - List of allocations added to the node
+    - location - Information about the location the node is assigned to
+    - servers - List of servers on the node
+```js
+ptero.nodes.fetchAll({
+    allocations: true, 
+    location: true,
+    servers: true
+})
+```
+
+
+
 
 
 
