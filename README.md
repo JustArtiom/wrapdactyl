@@ -1,18 +1,5 @@
 # ⚠️ Project in progress... ⚠️
 
-**For client api key:**  
-`ptero.client` - main functions completed  
-
-**For Application key:**  
-`ptero.users` - completed  
-`ptero.nodes`- completed  
-`ptero.wings` - completed  
-`ptero.locations` - completed  
-`ptero.servers` - main functions completed  
-`ptero.nests` - completed  
-
-
-
 # 🐦 Wrapdactyl
 Do you know that moment when your scripts are very messy and full of api calls to your pterodactyl panel? Well this is not a problem anymore because wrapdactyl is here. Wrapdactyl is a pterodactyl wrapper which allows you to make api calls by running simple functions. [More info about options here](#%EF%B8%8F-options)
 
@@ -833,13 +820,6 @@ ptero.nests.fetch(1, {
 
 #
 
-
-# ⚠️ To-Do List
-
-✅ - completed  
-⏩ - skipped for later
-
-⏩ DO THE WRAPPER
-
 # ⚙️ Options
+
 soon
