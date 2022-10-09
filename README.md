@@ -462,7 +462,7 @@ ptero.nodes.delete(1)
 
 **wings details:**  
 Check wings status
-- Value 1 - Required - Node id
+- Value 1 - Required - Node id  
 *⚠️ Warning: This is a beta function, it may have bugs, be slow or not work*
 ```js
 ptero.wings()
