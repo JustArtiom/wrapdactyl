@@ -729,6 +729,57 @@ Updates the server startup information
 }
 ```
 
+**Create server:**  
+Creates a new server
+- Value 1 - Required - Server configuration object
+    - name - Required - String
+    - user - Required - Number
+    - egg - Required - Number
+    - docker_image - Required - String
+    - startup - Required - String
+    - environment - Required - String
+    - limits - Required - Object
+        - memory - Requried - Number
+        - swap - Required - Number
+        - disk - Required - Number
+        - io - Required - Number
+        - cpu - Required - Number
+    - feature_limits - Required - Object
+        - databases - Required - Number
+        - backups - Required - Number
+    - allocation - Required - Object
+        - default - Required - allocation
+```js
+ptero.servers.create({
+    "name": "Building",
+    "user": 1,
+    "egg": 1,
+    "docker_image": "quay.io/pterodactyl/core:java",
+    "startup": "java -Xms128M -Xmx128M -jar server.jar",
+    "environment": {
+        "BUNGEE_VERSION": "latest",
+        "SERVER_JARFILE": "server.jar"
+    },
+    "limits": {
+        "memory": 128,
+        "swap": 0,
+        "disk": 512,
+        "io": 500,
+        "cpu": 100
+    },
+    "feature_limits": {
+        "databases": 5,
+        "backups": 1
+    },
+    "allocation": {
+        "default": 17
+    }
+})
+```
+
+
+
+
 # ⚠️ To-Do List
 
 ✅ - completed  
