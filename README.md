@@ -81,7 +81,10 @@ ptero.on('checkUpdate', (data) => {
 });
 ```
 # 🐛 Catching Errors
-Every function throws an error in case the request is wrong (panel offline or token invalid). I will give an example of error catching for this wrapper.
+Every function can throw errors in case of bad configuration or the wrapper not beeing ready. 
+After the async function is ran you can check if the funtion is complete or had an error by validating the variable "error"  
+
+**Here is an example how i would catch errors using this wrapper:**
 ```js
 // Example...
 ptero.any_funtion()
@@ -106,7 +109,7 @@ ptero.any_funtion()
     else if(data.error) {
         console.log(`Panel is probably offline`)
         /*
-        Example of request error:
+        Example of error:
         {
             error: true,
             message: AxiosError: connect ECONNREFUSED 0.0.0.0:00
