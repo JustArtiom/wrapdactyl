@@ -1,14 +1,14 @@
 # ⚠️ Project in progress... ⚠️
 
 **For client api key:**  
-`ptero.client` - its half completed. not all functions available  
+`ptero.client` - main functions completed  
 
 **For Application key:**  
 `ptero.users` - completed  
 `ptero.nodes`- completed  
 `ptero.wings` - completed  
 `ptero.locations` - completed  
-`ptero.servers` - in development...  
+`ptero.servers` - main functions completed  
 `ptero.nests` - in development...  
 
 
@@ -776,6 +776,37 @@ ptero.servers.create({
     }
 })
 ```
+
+**Suspend server:**  
+Suspends the specified server
+- Value 1 - Required - Server id 
+```js
+ptero.servers.suspend(1)
+```
+
+**Unuspend server:**  
+Unsuspends the specified server
+- Value 1 - Required - Server id 
+```js
+ptero.servers.unsuspend(1)
+```
+
+**Delete server:**  
+Deletes the specified server
+- Value 1 - Required - Server id 
+```js
+ptero.servers.delete(1)
+```
+
+**Force delete server:**  
+Forcefully deletes the specified server
+```js
+ptero.servers.forceDelete(1)
+```
+
+#
+
+
 
 
 

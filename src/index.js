@@ -146,7 +146,10 @@ module.exports = class {
         updateStartup: (serverid, configuration) => require('./servers/updateStartup')(this.config, this.lastcheck, serverid, configuration),
         create: (configuration) => require('./servers/create')(this.config, this.lastcheck, configuration),
         suspend: (serverid) => require('./servers/suspend')(this.config, this.lastcheck, serverid),
-        unsuspend: (serverid) => require('./servers/unsuspend')(this.config, this.lastcheck, serverid)
+        unsuspend: (serverid) => require('./servers/unsuspend')(this.config, this.lastcheck, serverid),
+        reinstall: (serverid) => require('./servers/reinstall')(this.config, this.lastcheck, serverid),
+        delete: (serverid) => require('./servers/delete')(this.config, this.lastcheck, serverid),
+        forceDelete: (serverid) => require('./servers/forceDelete')(this.config, this.lastcheck, serverid)
     }
     nodes = {
         cache: new Map(),
