@@ -5,11 +5,11 @@
 
 **For Application key:**  
 `ptero.users` - completed  
-`ptero.nodes`- completed
-`ptero.wings` - completed
+`ptero.nodes`- completed  
+`ptero.wings` - completed  
 `ptero.locations` - in development...  
 `ptero.servers` - in development...  
-`ptero.nests` - in development...
+`ptero.nests` - in development...  
 
 
 
