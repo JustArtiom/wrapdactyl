@@ -9,8 +9,7 @@
 `ptero.wings` - completed  
 `ptero.locations` - completed  
 `ptero.servers` - main functions completed  
-`ptero.nests` - in development...  
-`ptero.eggs` - in development...
+`ptero.nests` - completed  
 
 
 
