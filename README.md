@@ -521,7 +521,7 @@ Check wings status
 
 *⚠️ Warning: This is a beta function, it may have bugs, be slow or not work*
 ```js
-ptero.wings()
+ptero.wings(1)
 ```
 
 
