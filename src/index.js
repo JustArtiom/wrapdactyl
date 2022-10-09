@@ -144,7 +144,9 @@ module.exports = class {
         update: (serverid, configuration) => require('./servers/update')(this.config, this.lastcheck, serverid, configuration),
         updateBuild: (serverid, configuration) => require('./servers/updateBuild')(this.config, this.lastcheck, serverid, configuration),
         updateStartup: (serverid, configuration) => require('./servers/updateStartup')(this.config, this.lastcheck, serverid, configuration),
-        create: (configuration) => require('./servers/create')(this.config, this.lastcheck, configuration)
+        create: (configuration) => require('./servers/create')(this.config, this.lastcheck, configuration),
+        suspend: (serverid) => require('./servers/suspend')(this.config, this.lastcheck, serverid),
+        unsuspend: (serverid) => require('./servers/unsuspend')(this.config, this.lastcheck, serverid)
     }
     nodes = {
         cache: new Map(),
