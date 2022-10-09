@@ -16,12 +16,12 @@
 # 🐦 Wrapdactyl
 Do you know that moment when your scripts are very messy and full of api calls to your Pterodactyl panel? Well this is not a problem anymore because wrapdactyl is here. Wrapdactyl is a Pterodactyl wrapper which allows you to make api calls by running simple functions. [More info about options here](#%EF%B8%8F-options)
 
-# 📥 Installation
+# 📥 Installation:
 ```
 npm install wrapdactyl
 ```
 
-# 🔧 How to use
+# 🔧 How to Properly Use:
 Wrapdactyl is a class that requires some parameters in such as panel url client api key and application api key. It could also be customised by setting some options in order to add or remove functions to make your code maximum optimised.
 ```js
 const wrapdactyl = require('wrapdactyl');
@@ -48,7 +48,7 @@ ptero.check().then(data => {
 The option `checkInterval` offers you the opotunity to check the configuration in an interval of time  
 Now the wrapper is ready to use! have fun with it 👍
 
-# 💻 How cache works
+# 💻 How Cache Works:
 *⚠️Warning: This function spams your panel api*  
 Cache is a hardware or software component that stores data so that future requests for that data can be served faster. In this case cache can be used only if the option cache is enabled (`cache: true`). Cache can be stored at the begging of the code by running the `updateCache()` async function which returns boolean that tells if the cache process is complete or not.
 
@@ -63,7 +63,7 @@ ptero.updateCache().then(() => {
 ```
 Cache isnt always up to date since you can make modifications manually to the servers and/or users, so thats why there is an option called `updateCacheInterval` which can be set in miliseconds to update the cache in an interval of time.  
 
-# 📅 How events work
+# 📅 How Events Work:
 Events are actions or occurrences that happen in the system you are programming, which the system tells you about so your code can react to them. To listen to an wrapdactyl event you will have enable `events` in options and run the function `on()` which will take a string as first value, being the event name and a callback.
 ```js
 ptero.on('Event Name', (data) => console.log(data));
@@ -80,7 +80,7 @@ ptero.on('checkUpdate', (data) => {
     console.log(data)
 });
 ```
-# 🐛 Catching Errors
+# 🐛 Catching Errors:
 Every function can throw errors in case of bad configuration or the wrapper not being ready. 
 After the async function is ran you can check if the funtion is complete or had an error by validating the variable "error"  
 
@@ -136,7 +136,7 @@ ptero.any_funtion()
 
 
 
-# 📕 Client Functions
+# 📕 Client Functions:
 
 **Show permissions:**  
 Retries all available permissions
@@ -335,7 +335,7 @@ Reinstalls the server
 ptero.client.servers.reinstall('server id')
 ```
 
-# 📙 Application functions
+# 📙 Application Functions:
 
 **List users:**  
 Retrieves all users
