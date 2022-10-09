@@ -1,6 +1,6 @@
 # ⚠️ Project in progress... ⚠️
 
-**For client api key:**  
+**For client API key:**  
 `ptero.client` - its half completed. not all functions available  
 
 **For Application key:**  
