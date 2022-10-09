@@ -147,7 +147,10 @@ module.exports = class {
         fetch: (id, options) => require('./nodes/fetch')(this.config, this.lastcheck, id, options),
         configuration: (id) => require('./nodes/configuration')(this.config, this.lastcheck, id),
         create: (configuration) => require('./nodes/create')(this.config, this.lastcheck, configuration),
+        update: (id, configuration) => require('./nodes/update')(this.config, this.lastcheck, id, configuration),
+        delete: (id) => require('./nodes/delete')(this.config, this.lastcheck, id)
     }
+    wings = (id) => require('./wings')(this.config, this.lastcheck, id)
 
     on = (name, callback) => {
         if(name && callback) events.push({name, callback})

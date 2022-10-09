@@ -5,7 +5,8 @@
 
 **For Application key:**  
 `ptero.users` - completed  
-`ptero.nodes`- in development...  
+`ptero.nodes`- completed
+`ptero.wings` - completed
 `ptero.locations` - in development...  
 `ptero.servers` - in development...  
 `ptero.nests` - in development...
@@ -417,6 +418,57 @@ ptero.nodes.create({
     daemon_listen: 8080
 })
 ```
+
+**Update node:**  
+- Value 1 - Required - Node id
+- Value 2 - Required - Configuration
+    - public - Nullable - Boolean
+    - name - Required - String
+    - description - Nullable - String
+    - location_id - Required - Number
+    - fqdn - Required - String
+    - scheme - Required - String *(http/https)*
+    - behind_proxy - Nullable - Boolean
+    - maintenance_mode - Nullable - Boolean
+    - memory - Required - Number
+    - memory_overallocate - Required - Number
+    - disk - Required - Number
+    - disk_overallocate - Required - Number
+    - upload_size - Nullable - Number
+    - daemon_listen - Required - Number
+    - deamon_sftp - Required - Number
+```js
+ptero.nodes.update(1, {
+    name: "Updated Node",
+    location_id: 1,
+    fqdn: "node.domain.com",
+    scheme: "https",
+    memory: 10240,
+    memory_overallocate: 0,
+    disk: 50000,
+    disk_overallocate: 0,
+    upload_size: 100,
+    daemon_sftp: 2022,
+    daemon_listen: 8080
+})
+```
+
+**Delete node:**  
+Deletes the specified node
+- Value 1 - Required - Node id
+```js
+ptero.nodes.delete(1)
+```
+
+**wings details:**  
+Check wings status
+- Value 1 - Required - Node id
+*⚠️ Warning: This is a beta function, it may have bugs, be slow or not work*
+```js
+ptero.wings()
+```
+
+
 
 
 
