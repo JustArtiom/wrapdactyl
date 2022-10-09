@@ -80,7 +80,7 @@ ptero.on('checkUpdate', (data) => {
     console.log(data)
 });
 ```
-# Catching Errors
+# 🐛 Catching Errors
 Every function throws an error in case the request is wrong (panel offline or token invalid). I will give an example of error catching for this wrapper.
 ```js
 // Example...
