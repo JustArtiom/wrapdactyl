@@ -7,7 +7,7 @@
 `ptero.users` - completed  
 `ptero.nodes`- completed  
 `ptero.wings` - completed  
-`ptero.locations` - completed
+`ptero.locations` - completed  
 `ptero.servers` - in development...  
 `ptero.nests` - in development...  
 
