@@ -168,7 +168,7 @@ ptero.client.servers.fetchAll()
 **Server details:**  
 Retrieves information about the specified server
 - Value 1 - Required - Server id
-- Value 2 - Nullable - Object - Optimise code performance
+- Value 2 - Nullable - Options Object
     - egg: true - Information about the egg the server uses
     - subusers: true - List of subusers on the server
 ```js
@@ -292,7 +292,7 @@ ptero.users.fetchAll({servers: true})
 **User details:**  
 Retrieves the specified user
 - Value 1 - Required - Number or string id of the user
-- Value 2 - nullAble - Object
+- Value 2 - nullAble - Options Object
     - servers: true - List of servers the user has access to
 ```js
 ptero.users.fetch(1, {servers: true})
@@ -300,7 +300,7 @@ ptero.users.fetch(1, {servers: true})
 
 **Create user:**  
 Creates a new user
-- Value 1 - Required - Object
+- Value 1 - Required - Options Object
     - username - Required - string
     - email - Required - string
     - first_name - Required - string
@@ -322,7 +322,7 @@ ptero.users.create({
 **Update user:**  
 Updates the user information
 - Value 1 - Required - The id of the user
-- Value 2 - Required - Object
+- Value 2 - Required - Options Object
     - username - Required - string
     - email - Required - string
     - first_name - Required - string
@@ -350,7 +350,7 @@ ptero.users.delete(2)
 
 **List nodes:**  
 Retrieves a list of all nodes
-- Value 1 - nullable - Object options 
+- Value 1 - nullable - Options Object 
     - allocations - List of allocations added to the node
     - location - Information about the location the node is assigned to
     - servers - List of servers on the node
@@ -362,7 +362,27 @@ ptero.nodes.fetchAll({
 })
 ```
 
+**Node details:**  
+Retrieves the specified node
+- Value 1 - Required - Node id
+- Value 2 - nullable - Options Object 
+    - allocations - List of allocations added to the node
+    - location - Information about the location the node is assigned to
+    - servers - List of servers on the node
+```js
+ptero.nodes.fetch(1, {
+    allocations: true, 
+    location: true,
+    servers: true
+})
+```
 
+**Node configuration:**
+Displays the Wings configuration
+- Value 1 - Required - Node id
+```js
+ptero.nodes.configuration(1)
+```
 
 
 
