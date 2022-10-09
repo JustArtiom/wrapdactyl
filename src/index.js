@@ -155,9 +155,13 @@ module.exports = class {
             delete: (nodeid, allocationid) => require('./nodes/allocations/delete')(this.config, this.lastcheck, nodeid, allocationid)
         }
     }
-    wings = (id) => require('./wings')(this.config, this.lastcheck, id)
+    wings = (nodeid) => require('./wings')(this.config, this.lastcheck, nodeid)
     locations = {
-        fetchAll: (options) => require('./locations/fetchAll')(this.config, this.lastcheck, options)
+        fetchAll: (options) => require('./locations/fetchAll')(this.config, this.lastcheck, options),
+        fetch: (locationid, options) => require('./locations/fetch')(this.config, this.lastcheck, locationid, options),
+        create: (configuration) => require('./locations/create')(this.config, this.lastcheck, configuration),
+        update: (locationid, configuration) => require('./locations/update')(this.config, this.lastcheck, locationid, configuration),
+        delete: (locationid) => require('./locations/delete')(this.config, this.lastcheck, locationid)
     }
 
     on = (name, callback) => {

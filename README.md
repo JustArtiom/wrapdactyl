@@ -561,6 +561,64 @@ ptero.nodes.allocations.delete(1, 1)
 
 #
 
+**List locations:**  
+Retrieves all locations
+- Value 1 - Nullable - Options object
+    - nodes - List of nodes assigned to the location
+    - servers - List of servers in the location
+```js
+ptero.locations.fetchAll({
+    nodes: true,
+    servers: true
+})
+```
+
+**Location details**  
+Retrieves the specified location
+- Value 1 - Required - Location id
+- Value 2 - Nullable - Options object
+    - nodes - List of nodes assigned to the location
+    - servers - List of servers in the location
+```js
+ptero.locations.fetch(1, {
+    nodes: true,
+    servers: true
+})
+```
+
+**Create location:**  
+Creates a new location
+- Value 1 - Required - configuration object
+    - short - Required - String - Location name
+    - long - Nullable - String - Location description
+```js
+ptero.locations.create({
+    short: 'UK location'
+    long: 'nodes that are located in uk'
+})
+```
+
+**Update location:**  
+Updates the specified location
+- Value 1 - Required - Location id
+- Value 1 - Required - configuration object
+    - short - Required - String - Location name
+    - long - Nullable - String - Location description
+```js
+ptero.locations.update(1, {
+    short: 'UK'
+    long: 'datacenters in uk'
+})
+```
+
+**Delete location:**  
+Updates the specified location
+- Value 1 - Required - location id
+```js
+ptero.locations.delete(1)
+```
+
+
 
 
 

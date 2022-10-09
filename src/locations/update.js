@@ -3,11 +3,11 @@ const axios = require('axios');
 module.exports = async (config, lastcheck, id, configuration) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
     if(lastcheck.application === null) throw 'Wrapdactyl - Application api key not configured'
-
-    if(!id) throw 'Wrapdactyl - The id of the node must be present'
+    
+    if(!id) throw 'Wrapdactyl - The id of the location must be present'
     if(!configuration || typeof configuration !== 'object') throw 'Wrapdactyl - configuration must be a present object'
 
-    let data = await axios.patch(config.url() + '/api/application/nodes/' + id, configuration, {
+    let data = await axios.patch(config.url() + '/api/application/locations/' + id, configuration, {
         timeout: 5000,
         headers: {
             "Authorization": "Bearer "+ config.application(),
