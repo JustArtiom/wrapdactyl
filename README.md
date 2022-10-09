@@ -549,6 +549,13 @@ ptero.nodes.allocations.create(1, {
 })
 ```
 
+**Delete allocation:**  
+Deletes the specified allocation  
+- Value 1 - Required - Node id
+- Value 2 - Required - Allocation id
+```js
+ptero.nodes.allocations.delete(1, 1)
+```
 
 
 

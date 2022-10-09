@@ -144,14 +144,15 @@ module.exports = class {
     nodes = {
         cache: new Map(),
         fetchAll: (options) => require('./nodes/fetchAll')(this.config, this.lastcheck, options),
-        fetch: (id, options) => require('./nodes/fetch')(this.config, this.lastcheck, id, options),
-        configuration: (id) => require('./nodes/configuration')(this.config, this.lastcheck, id),
+        fetch: (nodeid, options) => require('./nodes/fetch')(this.config, this.lastcheck, nodeid, options),
+        configuration: (nodeid) => require('./nodes/configuration')(this.config, this.lastcheck, nodeid),
         create: (configuration) => require('./nodes/create')(this.config, this.lastcheck, configuration),
-        update: (id, configuration) => require('./nodes/update')(this.config, this.lastcheck, id, configuration),
-        delete: (id) => require('./nodes/delete')(this.config, this.lastcheck, id),
+        update: (nodeid, configuration) => require('./nodes/update')(this.config, this.lastcheck, nodeid, configuration),
+        delete: (nodeid) => require('./nodes/delete')(this.config, this.lastcheck, nodeid),
         allocations: {
-            fetchAll: (id, options) => require('./nodes/allocations/fetchAll')(this.config, this.lastcheck, id, options),
-            create: (id, configuration) => require('./nodes/allocations/create')(this.config, this.lastcheck, id, configuration)
+            fetchAll: (nodeid, options) => require('./nodes/allocations/fetchAll')(this.config, this.lastcheck, nodeid, options),
+            create: (nodeid, configuration) => require('./nodes/allocations/create')(this.config, this.lastcheck, nodeid, configuration),
+            delete: (nodeid, allocationid) => require('./nodes/allocations/delete')(this.config, this.lastcheck, nodeid, allocationid)
         }
     }
     wings = (id) => require('./wings')(this.config, this.lastcheck, id)
