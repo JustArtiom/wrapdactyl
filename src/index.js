@@ -146,6 +146,7 @@ module.exports = class {
         fetchAll: (options) => require('./nodes/fetchAll')(this.config, this.lastcheck, options),
         fetch: (id, options) => require('./nodes/fetch')(this.config, this.lastcheck, id, options),
         configuration: (id) => require('./nodes/configuration')(this.config, this.lastcheck, id),
+        create: (configuration) => require('./nodes/create')(this.config, this.lastcheck, configuration),
     }
 
     on = (name, callback) => {

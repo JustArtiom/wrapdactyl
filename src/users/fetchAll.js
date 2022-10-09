@@ -12,7 +12,7 @@ module.exports = async (config, lastcheck, options) => {
 
     let arrayusers = [];
     
-    let pagination = (await axios.get(config.url() + '/api/application/users', {
+    let pagination = await axios.get(config.url() + '/api/application/users', {
         timeout: 5000, 
         headers: {
             "Authorization": "Bearer "+ config.application(),
@@ -31,7 +31,7 @@ module.exports = async (config, lastcheck, options) => {
             panelError: false,
             message: err
         }
-    }))
+    })
 
     if(pagination.error) return pagination
     pagination = pagination.data.meta.pagination

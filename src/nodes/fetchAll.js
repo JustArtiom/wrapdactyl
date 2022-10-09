@@ -14,7 +14,7 @@ module.exports = async (config, lastcheck, options) => {
 
     let arraynodes = [];
     
-    let pagination = (await axios.get(config.url() + '/api/application/nodes', {
+    let pagination = await axios.get(config.url() + '/api/application/nodes', {
         timeout: 5000, 
         headers: {
             "Authorization": "Bearer "+ config.application(),
@@ -33,7 +33,7 @@ module.exports = async (config, lastcheck, options) => {
             panelError: false,
             message: err
         }
-    }))
+    })
 
     if(pagination.error) return pagination
     pagination = pagination.data.meta.pagination

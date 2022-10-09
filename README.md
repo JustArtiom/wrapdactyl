@@ -300,7 +300,7 @@ ptero.users.fetch(1, {servers: true})
 
 **Create user:**  
 Creates a new user
-- Value 1 - Required - Options Object
+- Value 1 - Required - Configuration
     - username - Required - string
     - email - Required - string
     - first_name - Required - string
@@ -377,15 +377,46 @@ ptero.nodes.fetch(1, {
 })
 ```
 
-**Node configuration:**
+**Node configuration:**  
 Displays the Wings configuration
 - Value 1 - Required - Node id
 ```js
 ptero.nodes.configuration(1)
 ```
 
-
-
+**Create node:**  
+Creates a new node
+- Value 1 - Required - Configuration
+    - public - Nullable - Boolean
+    - name - Required - String
+    - description - Nullable - String
+    - location_id - Required - Number
+    - fqdn - Required - String
+    - scheme - Required - String *(http/https)*
+    - behind_proxy - Nullable - Boolean
+    - maintenance_mode - Nullable - Boolean
+    - memory - Required - Number
+    - memory_overallocate - Required - Number
+    - disk - Required - Number
+    - disk_overallocate - Required - Number
+    - upload_size - Nullable - Number
+    - daemon_listen - Required - Number
+    - deamon_sftp - Required - Number
+```js
+ptero.nodes.create({
+    name: "New Node",
+    location_id: 1,
+    fqdn: "node1.domain.com",
+    scheme: "https",
+    memory: 10240,
+    memory_overallocate: 0,
+    disk: 50000,
+    disk_overallocate: 0,
+    upload_size: 100,
+    daemon_sftp: 2022,
+    daemon_listen: 8080
+})
+```
 
 
 

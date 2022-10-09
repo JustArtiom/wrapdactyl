@@ -7,7 +7,6 @@ module.exports = async (config, lastcheck, id) => {
 
     if(!id) throw 'Wrapdactyl - The id of the node must be present'
 
-
     let data = await axios.get(config.url() + '/api/application/nodes/' + id + '/configuration', {
         timeout: 5000,
         headers: {

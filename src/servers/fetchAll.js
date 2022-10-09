@@ -7,7 +7,7 @@ module.exports = async (config, lastcheck) => {
 
     let arrayservers = [];
     
-    let pagination = (await axios.get(config.url() + '/api/application/servers', {
+    let pagination = await axios.get(config.url() + '/api/application/servers', {
         timeout: 5000, 
         headers: {
             "Authorization": "Bearer "+ config.application(),
@@ -26,7 +26,7 @@ module.exports = async (config, lastcheck) => {
             panelError: false,
             message: err
         }
-    }))
+    })
 
     if(pagination.error) return pagination
     pagination = pagination.data.meta.pagination

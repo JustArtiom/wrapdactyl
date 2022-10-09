@@ -1,14 +1,13 @@
 const axios = require('axios');
 
-module.exports = async (config, lastcheck, usercahce, id, userdata) => {
+module.exports = async (config, lastcheck, configuration) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
     if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
     if(!lastcheck.application) throw 'Wrapdactyl - Application api key not configured or wrong'
 
-    if(!id) throw 'Wrapdactyl - Id of the new user must be present'
-    if(!userdata || typeof userdata !== 'object') throw 'Wrapdactyl - Userdata must be present'
+    if(!configuration || typeof configuration !== 'object') throw 'Wrapdactyl - configuration must be a present object'
 
-    let data = await axios.patch(config.url() + '/api/application/users/'+id, userdata, {
+    let data = await axios.post(config.url() + '/api/application/nodes', configuration, {
         timeout: 5000,
         headers: {
             "Authorization": "Bearer "+ config.application(),
@@ -29,12 +28,6 @@ module.exports = async (config, lastcheck, usercahce, id, userdata) => {
         }
     })
     if(data.error) return data
-
-    if(usercahce.has(data.data.attributes.id)){
-        let userdata = usercahce.get(data.data.attributes.id)
-        userdata.attributes = data.data.attributes
-        usercahce.set(data.data.attributes.id, userdata)
-    }
 
     return data.data.attributes
 }
