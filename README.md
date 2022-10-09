@@ -655,6 +655,79 @@ ptero.servers.fetch(1, {
 })
 ```
 
+**Update Server details:**  
+Updates the server details
+- Value 1 - Required - Server id
+- Value 2 - Required - configuration object
+    - name - required - string - Name for the server
+    - user - required - number - ID of the user which the server belongs to
+    - external_id - Nullable - string - External ID of the server
+    - description - Nullable - string - Description of the server
+
+```js
+ptero.serves.update(1, {
+    name: "Public Minecraft",
+    user: 1,
+    external_id: "customid1",
+    description: "a minecraft server for everyone"
+})
+```
+
+**Update server build:**  
+Updates the server build information
+- Value 1 - Required - Server id
+- Value 2 - Required - configuration object
+    - allocation - required - number - ID of primary allocation
+    - memory - required - number - The maximum amount of memory allowed for this container/server. Setting this to 0 will allow unlimited memory in a container.
+    - swap - required - number - Setting this to 0 will disable swap space on this server. Setting to -1 will allow unlimited swap.
+    - io - required - number - IO performance of this server relative to other running containers
+    - cpu - required - number - Each physical core on the system is considered to be 100%. Setting this value to 0 will allow a server to use CPU time without restrictions.
+    - disk - required - number - This server will not be allowed to boot if it is using more than this amount of space. If a server goes over this limit while running it will be safely stopped and locked until enough space is available. Set to 0 to allow unlimited disk usage.
+    - threads - Nullable - number - Enter the specific CPU cores that this process can run on, or leave blank to allow all cores. This can be a single number, or a comma seperated list. Example: 0, 0-1,3, or 0,1,3,4.
+    - feature_limits - required - configuration object
+        - databases - Present - number - The total number of databases a user is allowed to create for this server.
+        - backups - Present - number - The total number of allocations a user is allowed to create for this server.
+        - allocations - nullable - number - The total number of allocations a user is allowed to create for this server.
+
+```js
+ptero.servers.updateBuild(1, {
+    "allocation": 1,
+    "cpu": 0,
+    "memory": 1024,
+    "disk": 1024,
+    "swap": -1,
+    "io": 500,
+    "threads": null,
+    "feature_limits": {
+        "databases": 5,
+        "allocations": 5,
+        "backups": 2
+    }
+})
+```
+
+**Update server startup:**  
+Updates the server startup information
+- Value 1 - required - Server id
+- Value 2 - required - configuration object 
+    - startup - required - string - Edit your server's startup command here.
+    - environment - present - object - Environment variables that the egg requires/supports
+    - egg - required - string - ID of the egg to use
+    - image - required - string - The Docker image to use for this server
+    - skip_scripts - present - boolean - If enabled, if the Egg has an install script, it will NOT be ran during install.
+
+```js
+{
+  "startup": "java -Xms128M -Xmx{{SERVER_MEMORY}}M -jar {{SERVER_JARFILE}}",
+  "environment": {
+    "SERVER_JARFILE": "server.jar",
+    "VANILLA_VERSION": "latest"
+  },
+  "egg": 5,
+  "image": "quay.io/pterodactyl/core:java",
+  "skip_scripts": false
+}
+```
 
 # ⚠️ To-Do List
 

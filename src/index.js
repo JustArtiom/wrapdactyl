@@ -140,7 +140,10 @@ module.exports = class {
     servers = {
         cache: new Map(),
         fetchAll: () => require('./servers/fetchAll')(this.config, this.lastcheck),
-        fetch: (serverid, options) => require('./servers/fetch')(this.config, this.lastcheck, serverid, options)
+        fetch: (serverid, options) => require('./servers/fetch')(this.config, this.lastcheck, serverid, options),
+        update: (serverid, configuration) => require('./servers/update')(this.config, this.lastcheck, serverid, configuration),
+        updateBuild: (serverid, configuration) => require('./servers/updateBuild')(this.config, this.lastcheck, serverid, configuration),
+        updateStartup: (serverid, configuration) => require('./servers/updateStartup')(this.config, this.lastcheck, serverid, configuration),
     }
     nodes = {
         cache: new Map(),

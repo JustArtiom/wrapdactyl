@@ -42,5 +42,5 @@ module.exports = async (config, lastcheck, id, options) => {
     })
     if(data.error) return data
 
-    return data.data
+    return data.data.attributes
 }
