@@ -64,7 +64,7 @@ ptero.updateCache().then(() => {
 Cache isnt always up to date since you can make modifications manually to the servers and/or users, so thats why there is an option called `updateCacheInterval` which can be set in miliseconds to update the cache in an interval of time.  
 
 # 📅 How events work
-Events are actions or occurrences that happen in the system you are programming, which the system tells you about so your code can react to them. To listen to an wrapdactyl event you will have enable `events` in options and run the function `on()` which will take a string as first value, beeing the event name and a callback.
+Events are actions or occurrences that happen in the system you are programming, which the system tells you about so your code can react to them. To listen to an wrapdactyl event you will have enable `events` in options and run the function `on()` which will take a string as first value, being the event name and a callback.
 ```js
 ptero.on('Event Name', (data) => console.log(data));
 ```
@@ -81,7 +81,7 @@ ptero.on('checkUpdate', (data) => {
 });
 ```
 # 🐛 Catching Errors
-Every function can throw errors in case of bad configuration or the wrapper not beeing ready. 
+Every function can throw errors in case of bad configuration or the wrapper not being ready. 
 After the async function is ran you can check if the funtion is complete or had an error by validating the variable "error"  
 
 **Here is an example how i would catch errors using this wrapper:**
