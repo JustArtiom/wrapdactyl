@@ -2,8 +2,6 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, current_password, new_password) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
-    if(!lastcheck.client) throw 'Wrapdactyl - client api key not configured or wrong' 
 
     if(!current_password) throw 'Wrapdactyl - Old password must be present'
     if(!new_password) throw 'Wrapdactyl - New password must be present'

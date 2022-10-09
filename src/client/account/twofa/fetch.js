@@ -2,8 +2,6 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
-    if(!lastcheck.client) throw 'Wrapdactyl - client api key not configured or wrong'
 
     let data = await axios.get(config.url() + '/api/client/account/two-factor', {
         timeout: 5000,

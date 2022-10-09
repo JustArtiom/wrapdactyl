@@ -2,8 +2,6 @@ const axios =  require('axios')
 
 module.exports = async (config, lastcheck, description, allowed_ips) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
-    if(!lastcheck.client) throw 'Wrapdactyl - client api key not configured or wrong'
 
     if(!description) throw 'Wrapdactyl - Description must be present'
     if(!allowed_ips?.length) allowed_ips = []

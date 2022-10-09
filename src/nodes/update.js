@@ -2,8 +2,6 @@ const axios = require('axios');
 
 module.exports = async (config, lastcheck, id, configuration) => {
     if(!lastcheck) throw 'Wrapdactyl - Wrapdactyl is not ready'
-    if(!lastcheck.panel) throw 'Wrapdactyl - Panel offline'
-    if(!lastcheck.application) throw 'Wrapdactyl - Application api key not configured or wrong'
 
     if(!configuration || typeof configuration !== 'object') throw 'Wrapdactyl - configuration must be a present object'
 

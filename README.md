@@ -80,6 +80,58 @@ ptero.on('checkUpdate', (data) => {
     console.log(data)
 });
 ```
+# Catching Errors
+Every function throws an error in case the request is wrong (panel offline or token invalid). I will give an example of error catching for this wrapper.
+```js
+// Example...
+ptero.any_funtion()
+.then(data => {
+    if(data?.panelError) 
+        console.log(`Panel responded with status ${data.status} and error message is:\n ${data.message.map(x => x.detail).join('\n')}`)
+        /* 
+        example of panel error: 
+        {
+            error: true,
+            panelError: true,
+            status: 404,
+            message: [
+                {
+                code: 'NotFoundHttpException',
+                status: '404',
+                detail: 'The requested resource could not be found on the server.'
+                }
+            ]
+        }
+        */
+    else if(data.error) {
+        console.log(`Panel is probably offline`)
+        /*
+        Example of request error:
+        {
+            error: true,
+            message: AxiosError: connect ECONNREFUSED 0.0.0.0:00
+            at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1195:16) {
+                ...
+            }
+        }
+        */
+    }
+})
+.catch(err => {
+    // Wrapdactyl errors could be:
+    //   - Wrapdactyl not ready
+    //   - Invalid configuration/not all required parameters
+
+    console.error(err);
+
+    /*
+    Example or wrapdactyl error
+    "Wrapdactyl - id of the node must be present"
+    */
+})
+```
+
+
 
 # 📕 Client Functions
 
