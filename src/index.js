@@ -148,7 +148,11 @@ module.exports = class {
         configuration: (id) => require('./nodes/configuration')(this.config, this.lastcheck, id),
         create: (configuration) => require('./nodes/create')(this.config, this.lastcheck, configuration),
         update: (id, configuration) => require('./nodes/update')(this.config, this.lastcheck, id, configuration),
-        delete: (id) => require('./nodes/delete')(this.config, this.lastcheck, id)
+        delete: (id) => require('./nodes/delete')(this.config, this.lastcheck, id),
+        allocations: {
+            fetchAll: (id, options) => require('./nodes/allocations/fetchAll')(this.config, this.lastcheck, id, options),
+            create: (id, configuration) => require('./nodes/allocations/create')(this.config, this.lastcheck, id, configuration)
+        }
     }
     wings = (id) => require('./wings')(this.config, this.lastcheck, id)
 

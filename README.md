@@ -225,8 +225,8 @@ ptero.client.servers.fetchAll()
 Retrieves information about the specified server
 - Value 1 - Required - Server id
 - Value 2 - Nullable - Options Object
-    - egg: true - Information about the egg the server uses
-    - subusers: true - List of subusers on the server
+    - egg - Information about the egg the server uses
+    - subusers - List of subusers on the server
 ```js
 ptero.client.servers.fetch('server id', { egg: true, subusers: true });
 ```
@@ -340,7 +340,7 @@ ptero.client.servers.reinstall('server id')
 **List users:**  
 Retrieves all users
 - Value 1 - nullAble - Options object
-    - servers: true - List of servers the user has access to
+    - servers - List of servers the user has access to
 ```js
 ptero.users.fetchAll({servers: true})
 ```
@@ -349,7 +349,7 @@ ptero.users.fetchAll({servers: true})
 Retrieves the specified user
 - Value 1 - Required - Number or string id of the user
 - Value 2 - nullAble - Options Object
-    - servers: true - List of servers the user has access to
+    - servers - List of servers the user has access to
 ```js
 ptero.users.fetch(1, {servers: true})
 ``` 
@@ -515,7 +515,7 @@ Deletes the specified node
 ptero.nodes.delete(1)
 ```
 
-**wings details:**  
+**Wings details:**  
 Check wings status
 - Value 1 - Required - Node id  
 
@@ -524,8 +524,30 @@ Check wings status
 ptero.wings(1)
 ```
 
+**List allocations:**  
+Lists allocations added to the node
+- Value 1 - Required - Node id
+- Value 2 - Nullable - Options Object
+    - node - Information about the node the allocation belongs to
+    - server - Information about the server the allocation belongs to
+```js
+ptero.nodes.allocations.fetchAll(1, {node: true, server: true})
+```
 
-
+**Create allocation:**  
+Adds an allocation to the node
+- Value 1 - Required - Node id
+- Value 2 - Required - Configuration object
+    - ip - Required - String - IP address for the allocations
+    - ports - Required - Array with strings - Object containing the ports to add
+```js
+ptero.nodes.allocations.create(1, {
+    ip: "0.0.0.0",
+    ports: [
+        "25565"
+    ]
+})
+```
 
 
 
