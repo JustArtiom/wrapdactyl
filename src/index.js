@@ -117,9 +117,4 @@ module.exports = class {
 
     /** @type {Check} */
     lastcheck = null
-
-    
-
-
-    
 }
