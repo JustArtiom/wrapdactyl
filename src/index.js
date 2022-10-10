@@ -4,7 +4,9 @@ module.exports = class {
 
     /**
      * @typedef {Object} Options
+     * @property {boolean} [cache]
      * @property {number} [timeout]
+     * @property {number} [cacheUpdate]
     */
 
     /**
@@ -60,9 +62,11 @@ module.exports = class {
         }
     }
 
-    /** @type {Options} */
+    /** @type {Options} @constant @default */
     options = {
-        timeout: 5000
+        cache: false,
+        timeout: 5000,
+        cacheUpdate: 0
     }
 
     /**
@@ -112,9 +116,10 @@ module.exports = class {
     /**
      * @returns {Promise<Check>}
     */
-
     check = async () => require('./check')(this.request).then(d => this.lastcheck = d)
 
     /** @type {Check} */
     lastcheck = null
+
+
 }
