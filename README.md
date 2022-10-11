@@ -38,14 +38,14 @@ Options are for advanced people who want to have extra functions or modified one
 - **Timeout** - The timeout function can be only a __number above 5000__. This is the timeout for any request you make.
 - **Cache** - This can be __false__ to disable it or an __object__ to set some settings. It also __requires application__ token to be configured. Warning, cache setting spams your panel api, so enable only the cache parameters which you are goint to use in your script. Here are settings parameters for cache:   
 
-        cache parameter | Validation | Description
-        --- | --- | --- 
-        autoupdate | false or >30000 | Updates the cache in an interval of time set
-        users | true or false | Stores information about users in cache
-        servers | true or false | Stores information about servers in cache
-        nodes | true or false | Stores information about nodes in cache
-        locations | true or false | Stores information about locations in cache
-        nests | true or false | Stores information about nests in cache
+    cache parameter | Validation | Description
+    --- | --- | --- 
+    autoupdate | false or >30000 | Updates the cache in an interval of time set
+    users | true or false | Stores information about users in cache
+    servers | true or false | Stores information about servers in cache
+    nodes | true or false | Stores information about nodes in cache
+    locations | true or false | Stores information about locations in cache
+    nests | true or false | Stores information about nests in cache
 
 
 <!-- - **autoupdate** - This can be __0__ or __false__ for disabled and a __number above 30000__ to update the cache in an interval of time.
