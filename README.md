@@ -34,9 +34,11 @@ const ptero = new wrapdactyl({
 The url parameter is required which is a string of the panel URL or ip address starting with http or https depending if you use ssl or not. The client and application parameters are not required but at least one must be configured.
 
 # ⚙️ Options
-Options are for advanced people who want to have extra functions or modified ones. Here are some explanations of what options wrapdactyl offers:
-- **Timeout** - The timeout function can be only a __number above 5000__. This is the timeout for any request you make.
-- **Cache** - This can be __false__ to disable it or an __object__ to set some settings. It also __requires application__ token to be configured. Warning, cache setting spams your panel api, so enable only the cache parameters which you are goint to use in your script. Here are settings parameters for cache:   
+Options are for advanced people who want to have extra functions or modified ones. Here are some explanations of what options wrapdactyl offers:  
+Option | Validation | Description
+--- | --- | ---
+**Timeout** | false or >5000 | This is the timeout for any request you make.
+**Cache** | false or object | to set some settings. It also __requires application__ token to be configured. Warning, cache setting spams your panel api, so enable only the cache parameters which you are goint to use in your script. Here are settings parameters for cache:   
 
     cache parameter | Validation | Description
     --- | --- | --- 
