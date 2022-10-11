@@ -54,6 +54,13 @@ module.exports = class {
         }
 
         if(config.options){
+            if(config.options.cache) {
+                this.options.cache = true
+            }
+            if(config.options.cacheUpdate) {
+                if(!this.options.cache) throw new Error('Wrapdactyl - Cache update option can be set only if cache option is enabled')
+                
+            }
             if(config.options.timeout){
                 if(typeof config.options.timeout !== 'number') throw new Error('Wrapdactyl - The timeout option must be a number')
                 if(config.options.timeout < 1000) throw new Error('Wrapdactyl - The timeout option must be above 1000 (ms)')
@@ -68,6 +75,30 @@ module.exports = class {
         timeout: 5000,
         cacheUpdate: 0
     }
+
+    client = {
+        account: {},
+        servers: {
+            cache: new Map()
+        }
+    }
+    users = {
+        cache: new Map()
+    }
+    servers = {
+        cache: new Map()
+    }
+    nodes = {
+        cache: new Map()
+    }
+    wings = () => {}
+    locations = {
+        cache: new Map()
+    }
+    nests = {
+        cache: new Map()
+    }
+
 
     /**
      * @param {{root: string, method: string, data: object}} data
