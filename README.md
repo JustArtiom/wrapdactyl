@@ -41,6 +41,11 @@ Options are for advanced people who want to have extra functions or modified one
     cache parameter | Validation | Description
     --- | --- | --- 
     autoupdate | false or >30000 | Updates the cache in an interval of time set
+    users | true or false | Stores information about users in cache
+    servers | true or false | Stores information about servers in cache
+    nodes | true or false | Stores information about nodes in cache
+    locations | true or false | Stores information about locations in cache
+    nests | true or false | Stores information about nests in cache
 
 
 <!-- - **autoupdate** - This can be __0__ or __false__ for disabled and a __number above 30000__ to update the cache in an interval of time.
