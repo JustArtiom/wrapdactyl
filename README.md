@@ -37,9 +37,14 @@ The url parameter is required which is a string of the panel URL or ip address s
 Options are for advanced people who want to have extra functions or modified ones. Here are some explanations of what options wrapdactyl offers:
 - **Timeout** - The timeout function can be only a __number above 5000__. This is the timeout for any request you make.
 - **Cache** - This can be __false__ to disable it or an __object__ to set some settings. It also __requires application__ token to be configured. Warning, cache setting spams your panel api, so enable only the cache parameters which you are goint to use in your script. Here are settings parameters for cache:  
-    - **autoupdate** - This can be __0__ or __false__ for disabled and a __number above 30000__ to update the cache in an interval of time.
+option parameter | Validation | Description
+--- | --- | --- 
+autoupdate | 0 or false or number above 30000 | Updates the cache in an interval of time set
+
+
+<!-- - **autoupdate** - This can be __0__ or __false__ for disabled and a __number above 30000__ to update the cache in an interval of time.
     - **servers** - This parameter accepts only __true__ or __false__ in order to save info about the servers on panel or not
     - **users** - This parameter accepts only __true__ or __false__ in order to save info about the users on panel or not
     - **nodes** - This parameter accepts only __true__ or __false__ in order to save info about the nodes on panel or not
     - **locations** - This parameter accepts only __true__ or __false__ in order to save info about the locations on panel or not
-    - **nests** - This parameter accepts only __true__ or __false__ in order to save info about the nests on panel or not
+    - **nests** - This parameter accepts only __true__ or __false__ in order to save info about the nests on panel or not -->
