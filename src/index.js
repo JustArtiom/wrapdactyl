@@ -3,19 +3,9 @@ const axios = require('axios')
 module.exports = class {
 
     /**
-     * @typedef {Object} Cache
-     * @property {number|boolean} [autoupdate]
-     * @property {boolean} [servers]
-     * @property {boolean} [users]
-     * @property {boolean} [nodes]
-     * @property {boolean} [locations]
-     * @property {boolean} [nests]
-     */
-
-    /**
      * @typedef {Object} Options
      * @property {number} [timeout]
-     * @property {Cache} [cache]
+     * @property {boolean} [cache]
     */
 
     /**
@@ -27,18 +17,19 @@ module.exports = class {
     */
 
     constructor(config) {
-        super(config);
-        
         // URL validation
         if(!config || typeof config !== 'object') throw new Error('Wrapdactyl - There must be a configuration when creating the panel')
         if(!config.url || typeof config.url !== 'string') throw new Error('Wrapdactyl - The panel url must be present in the configuration')
         if(!config.url.startsWith('http://') && !config.url.startsWith('https://')) throw new Error('Wrapdactyl - The url must start with http or https')
 
-        // Save the panel url in the object class
-        Object.defineProperty(this, "url", {
+        // Create the config object
+        Object.defineProperty(this, "config", {
             enumerable: false,
-            value: config.url
+            value: {}
         })
+
+        // Save the panel url
+        this.config.url = config.url
 
         // Tokens Validations
         if(!config.client && !config.application) throw new Error('Wrapdactyl - One of the tokens must be present')
@@ -47,10 +38,7 @@ module.exports = class {
             if(config.client.length !== 48) throw new Error('Wrapdactyl - The client api key must be 48 characters long')
 
             // Save the client api key in the object class
-            Object.defineProperty(this, "client", {
-                enumerable: false,
-                value: config.client
-            })
+            this.config.client = config.client
         }
 
         if(config.application){
@@ -58,10 +46,7 @@ module.exports = class {
             if(config.application.length !== 48) throw new Error('Wrapdactyl - The application api key must be 48 characters long')
 
             // Save the client api key in the object class
-            Object.defineProperty(this, "application", {
-                enumerable: false,
-                value: config.application
-            })
+            this.config.application = config.application
         }
 
         if(config.options){
@@ -71,26 +56,7 @@ module.exports = class {
                 this.options.timeout = config.options.timeout
             }
 
-            if(config.options.cache && typeof config.options.cache === 'object') {
-                this.options.cache = {
-                    autoupdate: 30000,
-                    servers: false,          
-                    users: false,
-                    nodes: false,
-                    locations: false,
-                    nests: false
-                };
-
-                let {autoupdate, servers, users, nodes, locations, nests} = config.options.cache
-
-                if(autoupdate && typeof autoupdate === 'number') this.options.cache.autoupdate = autoupdate
-                if(servers && typeof servers === 'boolean') this.options.cache.servers = true
-                if(users && typeof users === 'boolean') this.options.cache.users = true
-                if(nodes && typeof nodes === 'boolean') this.options.cache.nodes = true
-                if(locations && typeof locations === 'boolean') this.options.cache.locations = true
-                if(nests && typeof nests === 'boolean') this.options.cache.nests = true
-                
-            }
+            if(config.options.cache) this.options.cache = true
         }
     }
 
@@ -105,24 +71,72 @@ module.exports = class {
 
         },
         servers: {
-            cache: new Map()
+
         }
     }
     users = {
-        cache: new Map()
+        cache: new Map(),
+        /**
+         * @param {Object} [options] 
+         * @param {boolean} [options.servers]
+         * 
+         * @returns {Promise}
+        */
+        fetchAll: async (options) => require('./users/fetchAll').wrapdactylscript(this.request, this.config, this.options, this.users.cache, options),
     }
     servers = {
-        cache: new Map()
+        cache: new Map(),
+        /**
+         * @param {Object} [options] 
+         * @param {boolean} [options.allocations]
+         * @param {boolean} [options.users]
+         * @param {boolean} [options.subusers]
+         * @param {boolean} [options.pack]
+         * @param {boolean} [options.nest]
+         * @param {boolean} [options.egg]
+         * @param {boolean} [options.variables]
+         * @param {boolean} [options.location]
+         * @param {boolean} [options.node]
+         * @param {boolean} [options.databases]
+         * 
+         * @returns {Promise}
+        */
+       fetchAll: async (options) => require('./servers/fetchAll').wrapdactylscript(this.request, this.config, this.options, this.servers.cache, options)
     }
     nodes = {
-        cache: new Map()
+        cache: new Map(),
+        /**
+         * @param {Object} [options] 
+         * @param {boolean} [options.allocations]
+         * @param {boolean} [options.location]
+         * @param {boolean} [options.servers]
+         * 
+         * @returns {Promise}
+         */
+        fetchAll: async (options) => require('./nodes/fetchAll').wrapdactylscript(this.request, this.config, this.options, this.nodes.cache, options)
     }
     wings = () => {}
     locations = {
-        cache: new Map()
+        cache: new Map(),
+        /**
+         * @param {Object} [options]
+         * @param {boolean} [options.nodes]
+         * @param {boolean} [options.servers]
+         * 
+         * @returns {Promise}
+         */
+        fetchAll: async (options) => require('./locations/fetchAll').wrapdactylscript(this.request, this.config, this.options, this.locations.cache, options)
     }
     nests = {
-        cache: new Map()
+        cache: new Map(),
+        /**
+         * @param {Object} [options]
+         * @param {boolean} [options.eggs]
+         * @param {boolean} [options.servers]
+         * 
+         * @returns {Promise}
+         */
+        fetchAll: async (options) => require('./nests/fetchAll').wrapdactylscript(this.request, this.config, this.options, this.nests.cache, options)
     }
 
 
@@ -136,29 +150,34 @@ module.exports = class {
 
         if(!root || (!root.startsWith('/api/client') && !root.startsWith('/api/application'))) throw new Error('Wrapdactyl - Custom request root needs to start /api/') 
         if(!method || !["GET", "POST", "PATCH", "DELETE"].includes(method.toUpperCase())) throw new Error('Wrapdactyl - Custom request method must be a string which could be get/post/patch/delete')
-        return axios({
-            url: `${this.url + root}`,
+        
+        let resp = await axios({
+            url: `${this.config.url + root}`,
             method: method.toUpperCase(),
             timeout: 5000, 
             headers: {
-                "Authorization": "Bearer "+ `${root.startsWith('/api/client') ? this.client : this.application}`,
+                "Authorization": "Bearer "+ `${root.startsWith('/api/client') ? this.config.client : this.config.application}`,
                 "Content-Type": "application/json"
             },
             data: body
         }).catch((err) => {
-            if(err?.response?.status < 500) return {
+            if(err?.response?.status < 500) throw {
                 error: true,
                 panelError: true,
                 status: err.response.status,
                 message: err.response.data.errors
             }
-            return {
+            throw {
                 error: true,
                 panelError: false,
                 status: err.toString(),
                 message: err
             }
         })
+        
+        if(resp.data) return resp.data
+        else if (resp.response) return resp.response
+        else return resp
     }
 
     /**
