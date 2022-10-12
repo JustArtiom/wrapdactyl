@@ -20,14 +20,7 @@ const ptero = new wrapdactyl({
     application: 'ptla_...',         // Application API key
     options: {
         timeout: 5000,
-        cache: {
-            autoupdate: 30000,
-            servers: true,
-            users: true,
-            nodes: true,
-            locations: true,
-            nests: true
-        }
+        cache: true
     }
 })
 ```
@@ -38,4 +31,17 @@ Options are for advanced people who want to have extra functions or modified one
 | Option        | Validation      | Description
 | ------------- | --------------- | ---
 | Timeout       | false or >5000  | This is the timeout for any request you make.
-| Cache         | false or object | Can store information about servers, users, nodes, locations, nests, and update them in an interval of time depending how the cache settings were made.
+| Cache         | true or false   | Cache is a hardware or software component that stores data so that future requests for that data can be served faster.
+
+# 💻 How Cache Works
+Cache is a hardware or software component that stores data so that future requests for that data can be served faster. There are many cache values in this wrapper, to update it you will need to have cache option enabledd and call the function `fetchAll` which will go trough all pages of the value selected and update the cache from its object. Here is an example
+```js
+ptero.users.cache.get(1) 
+// returns undefined
+
+ptero.users.fetchAll().then(() => {
+    console.log('Users cache has been updated')
+    ptero.users.cache.get(1) // returns data about user id chosen.
+})
+```
+Cache its beeing updated when using the wrapper only... it doesnt update when you manually make modifications directly from admin panel. 
