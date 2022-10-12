@@ -27,6 +27,8 @@ module.exports = class {
     */
 
     constructor(config) {
+        super(config);
+        
         // URL validation
         if(!config || typeof config !== 'object') throw new Error('Wrapdactyl - There must be a configuration when creating the panel')
         if(!config.url || typeof config.url !== 'string') throw new Error('Wrapdactyl - The panel url must be present in the configuration')
@@ -78,6 +80,16 @@ module.exports = class {
                     locations: false,
                     nests: false
                 };
+
+                let {autoupdate, servers, users, nodes, locations, nests} = config.options.cache
+
+                if(autoupdate && typeof autoupdate === 'number') this.options.cache.autoupdate = autoupdate
+                if(servers && typeof servers === 'boolean') this.options.cache.servers = true
+                if(users && typeof users === 'boolean') this.options.cache.users = true
+                if(nodes && typeof nodes === 'boolean') this.options.cache.nodes = true
+                if(locations && typeof locations === 'boolean') this.options.cache.locations = true
+                if(nests && typeof nests === 'boolean') this.options.cache.nests = true
+                
             }
         }
     }
@@ -89,7 +101,9 @@ module.exports = class {
     }
 
     client = {
-        account: {},
+        account: {
+
+        },
         servers: {
             cache: new Map()
         }
