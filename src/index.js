@@ -3,10 +3,19 @@ const axios = require('axios')
 module.exports = class {
 
     /**
+     * @typedef {Object} Cache
+     * @property {number|boolean} [autoupdate]
+     * @property {boolean} [servers]
+     * @property {boolean} [users]
+     * @property {boolean} [nodes]
+     * @property {boolean} [locations]
+     * @property {boolean} [nests]
+     */
+
+    /**
      * @typedef {Object} Options
-     * @property {boolean} [cache]
      * @property {number} [timeout]
-     * @property {number} [cacheUpdate]
+     * @property {Cache} [cache]
     */
 
     /**
@@ -54,26 +63,29 @@ module.exports = class {
         }
 
         if(config.options){
-            if(config.options.cache) {
-                this.options.cache = true
-            }
-            if(config.options.cacheUpdate) {
-                if(!this.options.cache) throw new Error('Wrapdactyl - Cache update option can be set only if cache option is enabled')
-                
-            }
             if(config.options.timeout){
                 if(typeof config.options.timeout !== 'number') throw new Error('Wrapdactyl - The timeout option must be a number')
                 if(config.options.timeout < 1000) throw new Error('Wrapdactyl - The timeout option must be above 1000 (ms)')
                 this.options.timeout = config.options.timeout
+            }
+
+            if(config.options.cache && typeof config.options.cache === 'object') {
+                this.options.cache = {
+                    autoupdate: 30000,
+                    servers: false,          
+                    users: false,
+                    nodes: false,
+                    locations: false,
+                    nests: false
+                };
             }
         }
     }
 
     /** @type {Options} @constant @default */
     options = {
-        cache: false,
         timeout: 5000,
-        cacheUpdate: 0
+        cache: false
     }
 
     client = {

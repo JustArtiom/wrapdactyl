@@ -22,7 +22,7 @@ const ptero = new wrapdactyl({
         timeout: 5000,
         cache: {
             autoupdate: 30000,
-            servers: true,          
+            servers: true,
             users: true,
             nodes: true,
             locations: true,
