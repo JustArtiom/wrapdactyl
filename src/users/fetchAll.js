@@ -7,25 +7,24 @@ exports.wrapdactylscript = async (request, config, pteroptions, userscache, opti
     }
 
     let arrayusers = [];
-    let error = null
 
     let pagination = await request({
         root: "/api/application/users",
         method: "GET"
-    }).catch(error => {error = error})
+    }).catch(e => e)
 
-    if(error) return error
+    if(pagination.error) return pagination
     pagination = pagination.meta.pagination
 
     for(let page = 1; page <= pagination.total_pages; page++){
-        let users = await request({
+        let data = await request({
             root: `/api/application/users?page=${page}${optionsarr.length ? `&include=${optionsarr.join(',')}` : ''}`,
             method: "GET"
-        }).catch(error => {error = error})
-        if(users && users.data) arrayusers = arrayusers.concat(users.data)
-    }
+        }).catch(e => e)
 
-    if(error) return error
+        if(data.error) return data
+        arrayusers = arrayusers.concat(data.data)        
+    }
 
     if(pteroptions.cache) {
         for(user of arrayusers) {

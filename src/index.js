@@ -68,10 +68,18 @@ module.exports = class {
 
     client = {
         account: {
-
+            cache: {}
         },
         servers: {
-
+            cache: new Map(),
+            /**
+             * @param {Object} [options]
+             * @param {boolean} [options.egg]
+             * @param {boolean} [options.subusers]
+             * 
+             * @returns {Promise}
+             */
+            fetchAll: (options) => require('./client/servers/fetchAll').wrapdactylscript(this.request, this.config, this.options, this.client.servers.cache, options),
         }
     }
     users = {

@@ -9,24 +9,24 @@ exports.wrapdactylscript = async (request, config, pteroptions, nestscache, opti
     }
 
     let arraynests = [];
-    let error = null
 
     let pagination = await request({
         root: "/api/application/nests",
         method: "GET"
-    }).catch(error => {error = error})
+    }).catch(e => e)
 
-    if(error) return error
+    if(pagination.error) return pagination
     pagination = pagination.meta.pagination
 
     for(let page = 1; page <= pagination.total_pages; page++){
-        await request({
+        let data = await request({
             root: `/api/application/nests?page=${page}${optionsarr.length ? `&include=${optionsarr.join(',')}` : ''}`,
             method: "GET"
-        }).then(({data}) => arraynests = arraynests.concat(data)).catch(error => {error = error})
-    }
+        }).catch(e => e);
 
-    if(error) return error
+        if(data.error) return data
+        arraynests = arraynests.concat(data.data)
+    }
 
     if(pteroptions.cache) {
         for(nest of arraynests) {

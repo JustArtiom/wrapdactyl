@@ -9,24 +9,25 @@ exports.wrapdactylscript = async (request, config, pteroptions, nodescache, opti
     }
 
     let arraynodes = [];
-    let error = null
 
     let pagination = await request({
         root: "/api/application/nodes",
         method: "GET"
-    }).catch(error => {error = error})
+    }).catch(e => e)
 
-    if(error) return error
+    if(pagination.error) return pagination
     pagination = pagination.meta.pagination
 
     for(let page = 1; page <= pagination.total_pages; page++){
-        await request({
+        let data = await request({
             root: `/api/application/nodes?page=${page}${optionsarr.length ? `&include=${optionsarr.join(',')}` : ''}`,
             method: "GET"
-        }).then(({data}) => arraynodes = arraynodes.concat(data)).catch(error => {error = error})
+        }).catch(e => e)
+
+        if(data.error) return data
+        arraynodes = arraynodes.concat(data.data)
     }
 
-    if(error) return error
 
     if(pteroptions.cache) {
         for(node of arraynodes) {

@@ -1,24 +1,16 @@
 exports.wrapdactylscript = async (request, config, pteroptions, serverscache, options) => {
-    if(!config.application) throw new Error('Wrapdactyl - Application api key must be configured to run this function')
+    if(!config.client) throw new Error('Wrapdactyl - Client api key must be configured to run this function')
 
     let optionsarr = []
     if(options){
-        if(options.allocations) optionsarr.push('allocations')
-        if(options.user) optionsarr.push('user')
         if(options.subusers) optionsarr.push('subusers')
-        if(options.pack) optionsarr.push('pack')
-        if(options.nest) optionsarr.push('nest')
         if(options.egg) optionsarr.push('egg')
-        if(options.variables) optionsarr.push('variables')
-        if(options.location) optionsarr.push('location')
-        if(options.node) optionsarr.push('node')
-        if(options.databases) optionsarr.push('databases')
     }
 
     let arrayservers = [];
 
     let pagination = await request({
-        root: "/api/application/servers",
+        root: "/api/client",
         method: "GET"
     }).catch(e => e)
 
@@ -27,11 +19,11 @@ exports.wrapdactylscript = async (request, config, pteroptions, serverscache, op
 
     for(let page = 1; page <= pagination.total_pages; page++){
         let data = await request({
-            root: `/api/application/servers?page=${page}${optionsarr.length ? `&include=${optionsarr.join(',')}` : ''}`,
+            root: `/api/client?page=${page}${optionsarr.length ? `&include=${optionsarr.join(',')}` : ''}`,
             method: "GET"
         }).catch(e => e)
 
-        if(data.error) return data
+        if(data.error) return arrayservers = data
         arrayservers = arrayservers.concat(data.data)
     }
 
