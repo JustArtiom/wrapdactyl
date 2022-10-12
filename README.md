@@ -30,7 +30,7 @@ The url parameter is required which is a string of the panel URL or ip address s
 Options are for advanced people who want to have extra functions or modified ones. Here are some explanations of what options wrapdactyl offers:  
 | Option        | Validation      | Description
 | ------------- | --------------- | ---
-| Timeout       | false or >5000  | This is the timeout for any request you make.
+| Timeout       | false or >=5000  | This is the timeout for any request you make.
 | Cache         | true or false   | Cache is a hardware or software component that stores data so that future requests for that data can be served faster.
 
 # 💻 How Cache Works
