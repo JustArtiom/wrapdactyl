@@ -1,6 +1,6 @@
-import axios from "axios"
-import Wrapdactyl from ".."
-import { WrapdactylRequestOptions } from "../types"
+import axios from "axios";
+import Wrapdactyl from "..";
+import { WrapdactylRequestOptions } from "../types";
 
 export default async (that: Wrapdactyl, route: string = "", options: WrapdactylRequestOptions = {})=> {
     return await axios({

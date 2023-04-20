@@ -1,6 +1,7 @@
+```js
 import Wrapdactyl from "../src";
 import config from "./config";
-import { setTimeout } from "node:timers/promises"
+
 const ptero = new Wrapdactyl({
     url: config.url,
     client: config.client,
@@ -10,30 +11,26 @@ const ptero = new Wrapdactyl({
         simplifyErrors: false
     }
 })
-
-
-
-
 const server = new ptero.client.servers.websocket("0c08a1c8");
+
 (async () => {
     const data = await server.connect();
     
     server.on("connect", () => console.log("Connected to the server"));
-    server.on("authentication", () => console.log("Authenticated successfully"))
+    server.on("authentication", () => console.log("Authenticated and ready ready to communicate with the server"))
+    server.on("tokenExpired", () => console.log("Token expired, disconnecting..."))
+    server.on("disconnect", () => console.log("Disconnected from the server websocket"))
 
+    // Await until the connection to the websocket has been done
     await data.awaitConnection();
+    // Await until being authenticated
     await data.awaitAuth();
-    console.log("Authenticated successfully")
+
     server.power("start");
     server.requestLogs();
     server.requestStats();
     server.sendCommand("ls");
 
-    server.on("tokenExpired", () => console.log("Token expired, disconnecting..."))
-    server.on("disconnect", async() => {
-        await setTimeout(1000)
-        server.connect()
-    })
     server.on("installCompleted", () => console.log("Installation completed"))
     server.on("backupRestoreCompleted", () => console.log("Backup restore point completed"))
     server.on("backupCompleted", () => console.log("Taking backup of the server completed"))
@@ -44,7 +41,8 @@ const server = new ptero.client.servers.websocket("0c08a1c8");
     server.on("daemonMessage", (x) => console.log(`daemonMessage: ${x}`));
     server.on("console", (x) => console.log(`Console: ${x}`));
     server.on("status", (x) => console.log(`status: ${x}`));
-    // server.on("stats", (x) => console.log(`stats: ${x}`));
+    server.on("stats", (x) => console.log(x));
     server.on("transferLogs", (x) => console.log(`transferLogs: ${x}`))
     server.on("transferStatus", (x) => console.log(`transferStatus: ${x}`))
 })();
+```
