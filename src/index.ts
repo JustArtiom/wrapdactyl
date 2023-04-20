@@ -13,7 +13,7 @@ import {
     ClientAccountServerWebsocketDetails
 } from "./types";
 import request from "./utils/request";
-import check from "./utils/check";
+import wrapdactylCheck from "./utils/check";
 import serverWebsocketManager from "./utils/serverWebsocketManager";
 
 export default class Wrapdactyl {
@@ -57,21 +57,21 @@ export default class Wrapdactyl {
             if(params.options.simplifyErrors && typeof params.options.simplifyErrors === "boolean")
                 this.options.simplifyErrors = params.options.simplifyErrors
         }
-    }
+    };
 
     config = {
         url: "",
         client: "",
         application: ""
-    }
+    };
 
     options = {
         timeout: 5000,
         simplifyErrors: false,
-    }
+    };
 
-    request = (url: string, options?: WrapdactylRequestOptions) => request(this, url, options)
-    check = () => check(this)
+    request = (url: string, options?: WrapdactylRequestOptions) => request(this, url, options);
+    check = () => wrapdactylCheck(this);
 
     client = {
         /* This wont have a dedicated interface as it might be modified in the future */
@@ -127,7 +127,7 @@ export default class Wrapdactyl {
                 if(!identifier) throw new Error("Wrapdactyl - Server identifier must be present")
                 return this.request(`/api/client/servers/${identifier}/websocket`)
             },
-            websocket: serverWebsocketManager(this)
+            websocket: (identifier: string) => new serverWebsocketManager(this, identifier)
         },
-    }
+    };
 }
