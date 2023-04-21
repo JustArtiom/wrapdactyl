@@ -14,35 +14,5 @@ export default async (that: Wrapdactyl, route: string = "", options: WrapdactylR
             ...options.headers
         },
         data: options.body
-    }).then((data) => data.data).catch((error) => {
-        if(
-            (options.simplifyError === undefined && that.options.simplifyErrors) 
-            || options.simplifyError
-        ){
-        
-            if(error.response) throw {
-                error: true,
-                simplified: true,
-                code: error.code,
-                status: error.response.status,
-                statusText: error.response.statusText,
-                config: error.config,
-                data: error.response.data
-            }
-            
-            error = error.toJSON()
-            throw {
-                error: true,
-                simplified: true,
-                code: error.code,
-                status: error.status,
-                statusText: error.message,
-                name: error.name,
-                description: error.description,
-                config: error.config,
-                data: undefined
-            }
-        }
-        throw error
-    })
+    }).then((data) => data.data)
 }

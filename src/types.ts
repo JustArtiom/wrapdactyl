@@ -4,7 +4,6 @@ export interface WrapdactylParams {
     application?: string;
     options?: {
         timeout?: number;
-        simplifyErrors?: boolean;
     }
 }
 
@@ -83,6 +82,26 @@ export interface ClientApiKey {
     allowed_ips: string[],
     last_used_at: string,
     created_at: string
+}
+
+export interface ClientActivity {
+    object: "activity_log",
+    attributes: {
+        id: string,
+        batch: any,
+        event: string,
+        is_api: boolean,
+        ip: string,
+        description: string | null,
+        properties: {
+            ip: string,
+            useragent: string
+        } | {
+            identifier: string 
+        }
+        has_additional_metadata: boolean,
+        timestamp: string
+    }
 }
 
 export interface ClientPermissions {
@@ -188,4 +207,25 @@ export interface serverWebsocketManagerEvents {
     "transferStatus": (data: string) => any;
     "deleted": () => any;
     "daemonError": (message: string) => any;
+}
+
+export interface ClientServerResourcesResponse {
+    object: string;
+    attributes: {
+        current_state: string;
+        is_suspended: boolean;
+        resources: {
+            memory_bytes: number;
+            cpu_absolute: number;
+            disk_bytes: number;
+            network_rx_bytes: number;
+            network_tx_bytes: number;
+            uptime: number;
+        }
+    }
+}
+
+export interface ClientAccountFetchAllActivities {
+    object: "list",
+    data: ClientActivity[]
 }
