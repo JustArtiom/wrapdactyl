@@ -1,3 +1,4 @@
-node_modules
 docs
 tsconfig.json
+test
+.prettierrc.js

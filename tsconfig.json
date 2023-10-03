@@ -1,12 +1,27 @@
 {
-  "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "rootDir": "./src",
-    "outDir": "./lib",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
-  }
+    "compilerOptions": {
+        "allowJs": false,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "downlevelIteration": true,
+        "jsx": "preserve",
+        "incremental": true,
+        "noEmit": true,
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noImplicitReturns": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "verbatimModuleSyntax": true,
+        "tsBuildInfoFile": "node_modules/.cache/.tsbuildinfo",
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "types": ["vitest/globals"],
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": ["src", "tests"],
+    "exclude": ["./*.d.ts", "node_modules"]
 }
