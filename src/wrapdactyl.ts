@@ -51,6 +51,7 @@ export class WrapdactylBaseClass {
             url: params.url,
             timeout: 5000,
             userAgent: `Wrapdactyl/${projectVersion} (Node.js/${process.version}; ${process.platform}; Beta)`,
+            cache: false,
             ...params.options,
         };
     }

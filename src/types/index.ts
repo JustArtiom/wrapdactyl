@@ -10,22 +10,24 @@ type tokens =
           application: string;
       };
 
+export type WrapdactylConfig = {
+    url: string;
+} & tokens;
+
 export type WrapdactylParams = {
     url: string;
     options?: {
         userAgent?: string;
         timeout?: number;
+        cache?: boolean;
     };
-} & tokens;
-
-export type WrapdactylConfig = {
-    url: string;
 } & tokens;
 
 export type WrapdactylOptions = {
     url: string;
     userAgent: string;
     timeout: number;
+    cache: boolean;
 };
 
 export type WrapdactylRequest =
