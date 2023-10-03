@@ -1,0 +1,32 @@
+{
+  "name": "wrapdactyl",
+  "version": "0.1.0",
+  "description": "A wrapper for the Pterodactyl Panel API",
+  "main": "./lib",
+  "scripts": {
+    "build": "npx tsc",
+    "test": "npx tsc && node ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustArtiom/wrapdactyl.git"
+  },
+  "keywords": [
+    "pterodactyl",
+    "api",
+    "wrapper"
+  ],
+  "author": "JustArtiom",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JustArtiom/wrapdactyl/issues"
+  },
+  "homepage": "https://github.com/JustArtiom/wrapdactyl#readme",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.5.1",
+    "ws": "^8.14.2"
+  }
+}
