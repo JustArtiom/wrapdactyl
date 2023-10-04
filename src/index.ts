@@ -1,3 +1,3 @@
-import { clientClass } from "./clientClass";
+import { ApplicationClass } from "./applicationClass";
 
-export default class Wrapdactyl extends clientClass {}
+export default class Wrapdactyl extends ApplicationClass {}

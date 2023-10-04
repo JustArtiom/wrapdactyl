@@ -39,3 +39,32 @@ export type WrapdactylRequest =
           headers?: AxiosRequestConfig["headers"];
           data?: any;
       };
+
+export interface serverWebsocketManagerEvents {
+    connect: () => any;
+    authentication: () => any;
+    error: (data: string) => any;
+    disconnect: () => any;
+    tokenExpired: () => any;
+    daemonMessage: (message: string) => any;
+    installMessage: (message: string) => any;
+    installStarted: () => any;
+    installCompleted: () => any;
+    console: (message: string) => any;
+    status: (message: string) => any;
+    stats: (data: {
+        cpu_absolute: number;
+        disk_bytes: number;
+        memory_bytes: number;
+        memory_limit_bytes: number;
+        network: { rx_bytes: number; tx_bytes: number };
+        state: string;
+        uptime: number;
+    }) => any;
+    backupRestoreCompleted: () => any;
+    backupCompleted: () => any;
+    transferLogs: (message: string) => any;
+    transferStatus: (data: string) => any;
+    deleted: () => any;
+    daemonError: (message: string) => any;
+}

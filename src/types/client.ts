@@ -1,3 +1,6 @@
+// To-do: Check the typings as some of them are definetly wrong.
+// I was too lazy to check the src of pterodactyl panel api
+
 export interface ClientAccount {
     id: number;
     admin: boolean;
@@ -95,6 +98,20 @@ export interface ClientServerSubuser {
     permissions: string[];
 }
 
+export interface PaginatingMeta {
+    pagination: {
+        total: number;
+        count: number;
+        per_page: number;
+        current_page: number;
+        total_pages: number;
+        /**
+         * @todo find out what type does this value have
+         */
+        links: any;
+    };
+}
+
 export interface ClientPermissions {
     object: "system_premissions";
     attributes: {
@@ -167,5 +184,18 @@ export interface ClientServerFetchResponse<T> {
     meta: {
         is_server_owner: boolean;
         user_permissions: string[];
+    };
+}
+
+export interface ClientServerFetchAll<T> {
+    object: "list";
+    data: { object: "server"; attributes: ClientServer<T> }[];
+    meta: PaginatingMeta;
+}
+
+export interface ClientAccountServerWebsocketDetails {
+    data: {
+        token: string;
+        socket: string;
     };
 }

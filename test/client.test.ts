@@ -10,23 +10,26 @@ test("Client requests", async () => {
     const res = await ptero.client.account.fetch();
     const res = await ptero.client.account
     .updateEmail({
-        email: "example@xample.com",
+        email: "love_you_mom@xample.com",
         password: "987654321",
     })
-    .catch((e) => console.log(e.response));
     const res = await ptero.client.account.updatePassword({
         oldPassword: "987654321",
         newPassword: "123456789",
     });
     const res = await ptero.client.account.apiKeys.fetchAll();
     const res = await ptero.client.account.apiKeys.create({
-        description: "Hello world",
+        description: "Hi mom",
     });
     const res = await ptero.client.account.apiKeys.delete("ptlc_Jwer9u39aXK");
     const res = await ptero.client.account.twofa.fetch();
     const res = await ptero.client.account.twofa.enable(164342);
     const res = await ptero.client.account.twofa.disable({password: "123456789"})
     const res = await ptero.client.servers.fetch("f7184f95", ["egg", "subusers"]);
+    const res = await ptero.client.servers.fetchAll(0, ["egg", "subusers"]); // 0 means every page
     */
+    const res = await ptero.client.servers.websocketDetails("f7184f95");
+    console.log(res);
+
     expect(true);
 });

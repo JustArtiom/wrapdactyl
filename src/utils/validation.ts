@@ -36,14 +36,11 @@ export const isValid = {
             return null; // Token is not configured
         }
 
-        try {
-            await request({
-                url: path,
-            });
-            return true; // Token is valid
-        } catch (error) {
-            return false; // Token is not valid
-        }
+        return await request({
+            url: path,
+        })
+            .then(() => true)
+            .catch(() => false);
     },
 };
 

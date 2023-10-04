@@ -79,7 +79,7 @@ export class WrapdactylBaseClass {
 
         // Initialise configuration before making the request
         params.url = this.config.url + params.url;
-        params.timeout = this.options.timeout;
+        if (!params.timeout) params.timeout = this.options.timeout;
         params.headers = {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -87,8 +87,6 @@ export class WrapdactylBaseClass {
             "User-Agent": this.options.userAgent,
             ...params.headers,
         };
-
-        console.log(params);
 
         return axios(params).then((x) => x.data);
     };

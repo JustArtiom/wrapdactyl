@@ -2,16 +2,19 @@ import type {
     ClientAccountApiKeysCreateResponse,
     ClientAccountApiKeysFetchAllResponse,
     ClientAccountFetch,
+    ClientAccountServerWebsocketDetails,
     ClientAccountTwoFactorEnableResponse,
     ClientAccountTwoFactorFetchResponse,
     ClientPermissions,
+    ClientServerFetchAll,
     ClientServerFetchQry,
     ClientServerFetchResponse,
 } from "./types/client";
+import { pageToPages } from "./utils";
 import { rQry } from "./utils/parsers";
 import { WrapdactylBaseClass } from "./wrapdactyl";
 
-export class clientClass extends WrapdactylBaseClass {
+export class ClientClass extends WrapdactylBaseClass {
     client = {
         /**
          * @warn Types for this function wont be defined as new updates keeps updating them
@@ -190,6 +193,23 @@ export class clientClass extends WrapdactylBaseClass {
                 return this.request<
                     ClientServerFetchResponse<Pick<ClientServerFetchQry, K>>
                 >(`/api/client/servers/${id}${rQry(qry)}`);
+            },
+            fetchAll: <K extends keyof ClientServerFetchQry = never>(
+                page: number = 0,
+                qry?: K[]
+            ) =>
+                pageToPages<
+                    ClientServerFetchAll<Pick<ClientServerFetchQry, K>>,
+                    K
+                >(this.request, `/api/client`, page, qry),
+            websocketDetails: (id: string) => {
+                if (!id)
+                    throw new Error(
+                        "Wrapdactyl - Expected 1 arguments, but got 0"
+                    );
+                return this.request<ClientAccountServerWebsocketDetails>(
+                    `/api/client/servers/${id}/websocket`
+                );
             },
         },
     };
