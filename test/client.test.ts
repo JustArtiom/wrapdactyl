@@ -27,6 +27,10 @@ test("Client requests", async () => {
     const res = await ptero.client.account.twofa.enable(164342);
     const res = await ptero.client.account.twofa.disable({password: "123456789"})
     */
-    console.log(res);
+    const res = await ptero.client.servers.fetch("f7184f95", [
+        "egg",
+        "subusers",
+    ]);
+    console.log(res.attributes.relationships);
     expect(res);
 });

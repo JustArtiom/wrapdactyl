@@ -5,7 +5,9 @@ import type {
     ClientAccountTwoFactorEnableResponse,
     ClientAccountTwoFactorFetchResponse,
     ClientPermissions,
+    ClientServerFetchResponse,
 } from "./types/client";
+import { rQry } from "./utils/parsers";
 import { WrapdactylBaseClass } from "./wrapdactyl";
 
 export class clientClass extends WrapdactylBaseClass {
@@ -16,7 +18,14 @@ export class clientClass extends WrapdactylBaseClass {
         permissions: () =>
             this.request<ClientPermissions>("/api/client/permissions"),
 
+        /**
+         * Client account Manager
+         */
         account: {
+            /**
+             * @todo Implement up to date cache when webhooks will be added to pterodactyl (feature request)
+             * @warn The cache isnt kept up to date.
+             */
             cache: {
                 object: "user",
                 attributes: {
@@ -69,7 +78,7 @@ export class clientClass extends WrapdactylBaseClass {
             updatePassword: (params: {
                 oldPassword: string;
                 newPassword: string;
-            }): Promise<void> => {
+            }) => {
                 if (!params)
                     throw new Error(
                         "Wrapdactyl - Expected 1 arguments, but got 0"
@@ -78,7 +87,7 @@ export class clientClass extends WrapdactylBaseClass {
                     throw new Error(
                         "Wrapdactyl - oldPassword and newPassword values must be defined"
                     );
-                return this.request({
+                return this.request<void>({
                     url: "/api/client/account/password",
                     method: "PUT",
                     data: {
@@ -89,13 +98,18 @@ export class clientClass extends WrapdactylBaseClass {
                 }).then(() => {});
             },
 
+            /**
+             * Client API keys manager
+             */
             apiKeys: {
-                fetchAll: (): Promise<ClientAccountApiKeysFetchAllResponse> =>
-                    this.request("/api/client/account/api-keys"),
+                fetchAll: () =>
+                    this.request<ClientAccountApiKeysFetchAllResponse>(
+                        "/api/client/account/api-keys"
+                    ),
                 create: (params: {
                     description: string;
                     allowed_ips?: string[];
-                }): Promise<ClientAccountApiKeysCreateResponse> => {
+                }) => {
                     if (!params)
                         throw new Error(
                             "Wrapdactyl - Expected 1 arguments, but got 0"
@@ -105,40 +119,44 @@ export class clientClass extends WrapdactylBaseClass {
                             "Wrapdactyl - description value must be defined"
                         );
 
-                    return this.request({
+                    return this.request<ClientAccountApiKeysCreateResponse>({
                         url: "/api/client/account/api-keys",
                         method: "POST",
                         data: params,
                     });
                 },
-                delete: (identifier: string): Promise<void> => {
+                delete: (identifier: string) => {
                     if (!identifier)
                         throw new Error(
                             "Wrapdactyl - Expected 1 arguments, but got 0"
                         );
-                    return this.request({
+                    return this.request<void>({
                         url: `/api/client/account/api-keys/${identifier}`,
                         method: "DELETE",
                     }).then(() => {});
                 },
             },
+            /**
+             * Two factor authentification manager
+             * @todo Test this when i will understand how it works 😂
+             */
             twofa: {
-                fetch: (): Promise<ClientAccountTwoFactorFetchResponse> =>
-                    this.request("/api/client/account/two-factor"),
-                enable: (
-                    code: string | number
-                ): Promise<ClientAccountTwoFactorEnableResponse> => {
+                fetch: () =>
+                    this.request<ClientAccountTwoFactorFetchResponse>(
+                        "/api/client/account/two-factor"
+                    ),
+                enable: (code: string | number) => {
                     if (!code)
                         throw new Error(
                             "Wrapdactyl - Expected 1 arguments, but got 0"
                         );
-                    return this.request({
+                    return this.request<ClientAccountTwoFactorEnableResponse>({
                         url: "/api/client/account/two-factor",
                         method: "POST",
                         data: { code: code.toString() },
                     });
                 },
-                disable: (params: { password: string }): Promise<void> => {
+                disable: (params: { password: string }) => {
                     if (!params)
                         throw new Error(
                             "Wrapdactyl - Expected 1 arguments, but got 0"
@@ -147,12 +165,27 @@ export class clientClass extends WrapdactylBaseClass {
                         throw new Error(
                             "Wrapdactyl - Password value must be present"
                         );
-                    return this.request({
+                    return this.request<void>({
                         url: "/api/client/account/two-factor",
                         method: "DELETE",
                         data: { password: params.password },
                     });
                 },
+            },
+        },
+
+        /**
+         * Client Servers manager
+         */
+        servers: {
+            fetch: (id: string, qry?: ("egg" | "subusers")[]) => {
+                if (!id)
+                    throw new Error(
+                        "Wrapdactyl - Expected 1 arguments, but got 0"
+                    );
+                return this.request<ClientServerFetchResponse>(
+                    `/api/client/servers/${id}${rQry(qry)}`
+                );
             },
         },
     };
