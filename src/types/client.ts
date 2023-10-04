@@ -24,3 +24,41 @@ export interface ClientAccountFetch {
         language: string;
     };
 }
+
+export interface ClientApiKey {
+    identifier: string;
+    description: string;
+    allowed_ips: string[];
+    last_used_at: null | Date;
+    created_at: Date;
+}
+
+export interface ClientAccountApiKeysFetchAllResponse {
+    object: "list";
+    data: {
+        object: "api_key";
+        attributes: ClientApiKey;
+    }[];
+}
+
+export interface ClientAccountApiKeysCreateResponse {
+    object: "api_key";
+    attributes: ClientApiKey;
+    meta: {
+        secret_token: string;
+    };
+}
+
+export interface ClientAccountTwoFactorFetchResponse {
+    data: {
+        image_url_data: string;
+        secret: string;
+    };
+}
+
+export interface ClientAccountTwoFactorEnableResponse {
+    object: "recovery_tokens";
+    attributes: {
+        tokens: string[];
+    };
+}

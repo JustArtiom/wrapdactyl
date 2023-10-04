@@ -6,7 +6,6 @@ import type {
     WrapdactylRequest,
 } from "./types";
 import { isValid } from "./utils/validation";
-import { pingWebsite, checkToken } from "./utils/apiCheck";
 import axios from "axios";
 
 export class WrapdactylBaseClass {
@@ -25,7 +24,7 @@ export class WrapdactylBaseClass {
         });
 
         // Validating the URL
-        if (!isValid.url(params.url))
+        if (!isValid.url_struc(params.url))
             throw new Error("Wrapdactyl - Invalid panel url");
 
         // Validating the tokens
@@ -33,13 +32,13 @@ export class WrapdactylBaseClass {
             throw new Error(
                 "Wrapdactyl - One of the API tokens must be present"
             );
-        if (params.client && !isValid.token(params.client))
+        if (params.client && !isValid.token_struc(params.client))
             throw new Error("Wrapdactyl - Invalid Client API token");
         else
             Object.defineProperty(this.config, "client", {
                 enumerable: false,
             });
-        if (params.application && !isValid.token(params.application))
+        if (params.application && !isValid.token_struc(params.application))
             throw new Error("Wrapdactyl - Invalid Application API token");
         else
             Object.defineProperty(this.config, "application", {
@@ -89,6 +88,8 @@ export class WrapdactylBaseClass {
             ...params.headers,
         };
 
+        console.log(params);
+
         return axios(params).then((x) => x.data);
     };
 
@@ -102,9 +103,9 @@ export class WrapdactylBaseClass {
         ping: number;
     }> => {
         const [ping, client, application] = await Promise.all([
-            pingWebsite(this.config.url, this.options),
-            checkToken(this.request, this.config.client, "/api/client"),
-            checkToken(
+            isValid.pingWebsite(this.config.url, this.options),
+            isValid.checkToken(this.request, this.config.client, "/api/client"),
+            isValid.checkToken(
                 this.request,
                 this.config.application,
                 "/api/application/locations"

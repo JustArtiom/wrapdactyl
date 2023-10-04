@@ -37,5 +37,5 @@ export type WrapdactylRequest =
           method?: string;
           timeout?: number;
           headers?: AxiosRequestConfig["headers"];
-          body?: any;
+          data?: any;
       };
