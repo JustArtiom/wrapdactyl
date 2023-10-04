@@ -5,6 +5,7 @@ import type {
     ClientAccountTwoFactorEnableResponse,
     ClientAccountTwoFactorFetchResponse,
     ClientPermissions,
+    ClientServerFetchQry,
     ClientServerFetchResponse,
 } from "./types/client";
 import { rQry } from "./utils/parsers";
@@ -178,14 +179,17 @@ export class clientClass extends WrapdactylBaseClass {
          * Client Servers manager
          */
         servers: {
-            fetch: (id: string, qry?: ("egg" | "subusers")[]) => {
+            fetch: <K extends keyof ClientServerFetchQry = never>(
+                id: string,
+                qry?: K[]
+            ) => {
                 if (!id)
                     throw new Error(
                         "Wrapdactyl - Expected 1 arguments, but got 0"
                     );
-                return this.request<ClientServerFetchResponse>(
-                    `/api/client/servers/${id}${rQry(qry)}`
-                );
+                return this.request<
+                    ClientServerFetchResponse<Pick<ClientServerFetchQry, K>>
+                >(`/api/client/servers/${id}${rQry(qry)}`);
             },
         },
     };

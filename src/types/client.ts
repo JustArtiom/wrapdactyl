@@ -16,7 +16,7 @@ export interface ClientApiKey {
     created_at: Date;
 }
 
-export interface ClientServer {
+export interface ClientServer<T> {
     server_owner: boolean;
     identifier: string;
     internal_id: number;
@@ -63,7 +63,7 @@ export interface ClientServer {
                 attributes: ClientEggVariable;
             }[];
         };
-    };
+    } & T;
 }
 
 export interface ClientAllocation {
@@ -83,6 +83,16 @@ export interface ClientEggVariable {
     server_value: null | string;
     is_editable: boolean;
     rules: string;
+}
+
+export interface ClientServerSubuser {
+    uuid: string;
+    username: string;
+    email: string;
+    image: string;
+    "2fa_enabled": boolean;
+    created_at: Date;
+    permissions: string[];
 }
 
 export interface ClientPermissions {
@@ -134,9 +144,26 @@ export interface ClientAccountTwoFactorEnableResponse {
     };
 }
 
-export interface ClientServerFetchResponse {
+export interface ClientServerFetchQry {
+    egg: {
+        object: "egg";
+        attributes: {
+            uuid: string;
+            name: string;
+        };
+    };
+    subusers: {
+        object: "list";
+        data: {
+            object: "server_subuser";
+            attributes: ClientServerSubuser;
+        }[];
+    };
+}
+
+export interface ClientServerFetchResponse<T> {
     object: "server";
-    attributes: ClientServer;
+    attributes: ClientServer<T>;
     meta: {
         is_server_owner: boolean;
         user_permissions: string[];

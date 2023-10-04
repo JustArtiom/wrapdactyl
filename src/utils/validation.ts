@@ -46,3 +46,11 @@ export const isValid = {
         }
     },
 };
+
+export function includes<S extends string>(
+    haystack: readonly S[],
+    needle: string
+): needle is S {
+    const _haystack: readonly string[] = haystack;
+    return _haystack.includes(needle);
+}
