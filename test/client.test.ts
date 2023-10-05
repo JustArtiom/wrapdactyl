@@ -27,9 +27,21 @@ test("Client requests", async () => {
     const res = await ptero.client.account.twofa.disable({password: "123456789"})
     const res = await ptero.client.servers.fetch("f7184f95", ["egg", "subusers"]);
     const res = await ptero.client.servers.fetchAll(0, ["egg", "subusers"]); // 0 means every page
-    */
     const res = await ptero.client.servers.websocketDetails("f7184f95");
-    console.log(res);
+    */
+
+    await new Promise(async (rep) => {
+        const server = new ptero.client.servers.websocket("f7184f95");
+
+        server.connect();
+
+        server.on("connect", () => {
+            console.log("connected");
+            rep("yes");
+        });
+
+        server.on("authentication", () => {});
+    });
 
     expect(true);
 });

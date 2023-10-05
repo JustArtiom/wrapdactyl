@@ -43,7 +43,7 @@ export type WrapdactylRequest =
 export interface serverWebsocketManagerEvents {
     connect: () => any;
     authentication: () => any;
-    error: (data: string) => any;
+    error: (data: Error) => any;
     disconnect: () => any;
     tokenExpired: () => any;
     daemonMessage: (message: string) => any;

@@ -12,6 +12,7 @@ import type {
 } from "./types/client";
 import { pageToPages } from "./utils";
 import { rQry } from "./utils/parsers";
+import srvWsClass from "./utils/srvWsClass";
 import { WrapdactylBaseClass } from "./wrapdactyl";
 
 export class ClientClass extends WrapdactylBaseClass {
@@ -129,13 +130,13 @@ export class ClientClass extends WrapdactylBaseClass {
                         data: params,
                     });
                 },
-                delete: (identifier: string) => {
-                    if (!identifier)
+                delete: (id: string) => {
+                    if (!id)
                         throw new Error(
                             "Wrapdactyl - Expected 1 arguments, but got 0"
                         );
                     return this.request<void>({
-                        url: `/api/client/account/api-keys/${identifier}`,
+                        url: `/api/client/account/api-keys/${id}`,
                         method: "DELETE",
                     }).then(() => {});
                 },
@@ -211,6 +212,7 @@ export class ClientClass extends WrapdactylBaseClass {
                     `/api/client/servers/${id}/websocket`
                 );
             },
+            websocket: srvWsClass(this),
         },
     };
 }
