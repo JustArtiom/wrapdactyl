@@ -6,6 +6,7 @@ import type {
     ClientAccountTwoFactorEnableResponse,
     ClientAccountTwoFactorFetchResponse,
     ClientPermissions,
+    ClientServer,
     ClientServerFetchAll,
     ClientServerFetchQry,
     ClientServerFetchResponse,
@@ -175,6 +176,10 @@ export class ClientClass extends WrapdactylBaseClass {
 
         /** Client Servers manager */
         servers: {
+            cache: new Map<
+                string,
+                ClientServer<Partial<ClientServerFetchQry>>
+            >(),
             fetch: <K extends keyof ClientServerFetchQry = never>(
                 id: string,
                 qry?: K[]
@@ -185,7 +190,14 @@ export class ClientClass extends WrapdactylBaseClass {
                     );
                 return this.request<
                     ClientServerFetchResponse<Pick<ClientServerFetchQry, K>>
-                >(`/api/client/servers/${id}${rQry(qry)}`);
+                >(`/api/client/servers/${id}${rQry(qry)}`).then((srv) => {
+                    if (this.options.cache)
+                        this.client.servers.cache.set(
+                            srv.attributes.identifier,
+                            srv.attributes
+                        );
+                    return srv;
+                });
             },
             fetchAll: <K extends keyof ClientServerFetchQry = never>(
                 page: number = 0,
@@ -194,7 +206,13 @@ export class ClientClass extends WrapdactylBaseClass {
                 pageToPages<
                     ClientServerFetchAll<Pick<ClientServerFetchQry, K>>,
                     K
-                >(this.request, `/api/client`, page, qry),
+                >(
+                    this.request,
+                    `/api/client`,
+                    page,
+                    qry,
+                    this.options.cache ? this.client.servers.cache : undefined
+                ),
             websocketDetails: (id: string) => {
                 if (!id)
                     throw new Error(

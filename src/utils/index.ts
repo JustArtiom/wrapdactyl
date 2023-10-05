@@ -1,4 +1,5 @@
 import type {
+    ClientServer,
     ClientServerFetchAll,
     ClientServerFetchQry,
     PaginatingMeta,
@@ -10,15 +11,30 @@ export const pageToPages = async <T, K extends string>(
     request: WrapdactylBaseClass["request"],
     url: string,
     page: number,
-    qry?: K[]
+    qry?: K[],
+    cache?: Map<string, ClientServer<Partial<ClientServerFetchQry>>>
 ) => {
     // Fetch defined page
     if (typeof page !== "number" || page !== 0)
-        return request<T>(`${url}?page=${page}${rQry(qry, true)}`);
+        return request<any>(`${url}?page=${page}${rQry(qry, true)}`).then(
+            (srvs) => {
+                if (cache)
+                    for (let srv of srvs.data) {
+                        cache.set(srv.attributes.identifier, srv.attributes);
+                    }
+                return srvs as T;
+            }
+        );
 
     // Fetch the first page
-    let data = await request<T & { data: any[]; meta: PaginatingMeta }>(
-        `${url}?page=1${rQry(qry, true)}`
+    let data = await request<any>(`${url}?page=1${rQry(qry, true)}`).then(
+        (srvs) => {
+            if (cache)
+                for (let srv of srvs.data) {
+                    cache.set(srv.attributes.identifier, srv.attributes);
+                }
+            return srvs as T & { data: any[]; meta: PaginatingMeta };
+        }
     );
 
     // Return if there is only 1 page
@@ -27,6 +43,10 @@ export const pageToPages = async <T, K extends string>(
     // Start from page 2 as page 1 is already fetched
     for (let i = 2; i <= data.meta.pagination.total_pages; i++) {
         await request(`${url}?page=${i}${rQry(qry, true)}`).then((x: any) => {
+            if (cache)
+                for (let srv of x.data) {
+                    cache.set(srv.attributes.identifier, srv.attributes);
+                }
             data.data.push(...x.data);
         });
     }
