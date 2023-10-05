@@ -42,15 +42,16 @@ export interface ClientServer<T> {
     };
     invocation: string;
     docker_image: string;
-    egg_features: null;
+    egg_features: string[];
     feature_limits: {
         databases: number;
         allocations: number;
         backups: number;
     };
-    status: null;
+    status: string | null;
     is_suspended: boolean;
     is_installing: boolean;
+    is_transferring: boolean;
     relationships: {
         allocations: {
             object: "list";
@@ -80,10 +81,10 @@ export interface ClientAllocation {
 
 export interface ClientEggVariable {
     name: string;
-    description: SVGAnimatedString;
+    description: string;
     env_variable: string;
-    default_value: null | string;
-    server_value: null | string;
+    default_value: string;
+    server_value: string;
     is_editable: boolean;
     rules: string;
 }
@@ -98,6 +99,16 @@ export interface ClientServerSubuser {
     permissions: string[];
 }
 
+export interface ClientError {
+    code: string;
+    status: string;
+    detail: string;
+    meta: null | {
+        source_field: string;
+        rule: string;
+    };
+}
+
 export interface PaginatingMeta {
     pagination: {
         total: number;
@@ -110,6 +121,55 @@ export interface PaginatingMeta {
          */
         links: any;
     };
+}
+
+export interface ClientServerBackup {
+    object: "backup";
+    attributes: {
+        uuid: string;
+        name: string;
+        ignored_files: string[];
+        checksum: string | null;
+        bytes: number;
+        is_locked: boolean;
+        is_successful: boolean;
+        created_at: Date;
+        completed_at: Date;
+    };
+}
+
+export interface ClientServerDatabaseRelationshipsPassword {
+    password: {
+        object: string;
+        attributes: {
+            password: string;
+        };
+    };
+}
+
+export interface ClientServerDatabase<T> {
+    id: string;
+    host: {
+        address: string;
+        port: string;
+    };
+    name: string;
+    username: string;
+    connections_from: string;
+    max_connections: number;
+    relationships: T;
+}
+
+export interface ClientServerFileObject {
+    name: string;
+    mode: string;
+    mode_bits: string;
+    size: number;
+    is_file: boolean;
+    is_symlink: boolean;
+    mimetype: string;
+    created_at: Date;
+    modified_at: Date;
 }
 
 export interface ClientPermissions {
