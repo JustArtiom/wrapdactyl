@@ -27,19 +27,39 @@ export interface WSConfiguration {
     token: string;
 }
 
-export default (
-    wdctyl: ClientClass
-): new (id: string) => BaseServerWebsocketManager & {
+type ExtendedServerWebsocketManager = BaseServerWebsocketManager & {
     server_id: string;
     config?: WSConfiguration;
+    authed: boolean;
+    status: string;
     ws?: WebSocket;
+
     isConnected: () => boolean;
-    updateCredentials: () => Promise<WSConfiguration>;
-    auth: () => boolean;
-    connect: () => Promise<BaseServerWebsocketManager>;
+    isAuthed: () => boolean;
+
+    connect: () => ExtendedServerWebsocketManager;
     disconnect: (code?: number, data?: string | Buffer) => void;
-} =>
-    class extends BaseServerWebsocketManager {
+
+    awaitConnection: () => Promise<void>;
+    awaitAuth: () => Promise<void>;
+
+    start: () => Promise<void>;
+    restart: () => Promise<void>;
+    stop: () => Promise<void>;
+    kill: () => Promise<void>;
+
+    request: {
+        logs: () => void;
+        stats: () => void;
+    };
+
+    cmd: (s: string) => void;
+};
+
+export default (
+    wdctyl: ClientClass
+): new (id: string) => ExtendedServerWebsocketManager =>
+    class ServerWebsocketManager extends BaseServerWebsocketManager {
         constructor(id: string) {
             super();
             if (!id)
@@ -49,46 +69,145 @@ export default (
         }
         server_id!: string;
         config?: WSConfiguration;
+        status: string = "offline";
+        authed: boolean = false;
         ws?: WebSocket;
 
+        /** Check if youre connected to the server */
         isConnected = () => !!(this.ws && this.ws.OPEN === WebSocket.OPEN);
+        /** Check if youre authenticated  */
+        isAuthed = () => !!(this.ws && this.authed);
 
-        connect = async () => {
+        /** Connect to the server */
+        connect = () => {
             if (this.isConnected())
                 throw new Error("Wrapdactyl - Websocket is already connected");
 
-            const config = await this.updateCredentials();
-            this.createWebSocket(config);
-            this.setupEventHandlers();
+            this.updateCredentials().then((config) => {
+                this.createWebSocket(config);
+                this.setupEventHandlers();
+            });
 
             return this;
         };
 
+        /** Disconnect from the server */
         disconnect = (code?: number, data?: string | Buffer) => {
             if (this.ws) {
+                this.authed = false;
                 this.ws.close(code, data);
                 this.ws = undefined;
             }
         };
 
-        updateCredentials = () =>
-            wdctyl.client.servers
-                .websocketDetails(this.server_id)
-                .then((wsinfo) => {
-                    this.config = {
-                        token: wsinfo.data.token,
-                        socket: wsinfo.data.socket,
-                        origin: wdctyl.options.url,
-                    };
-                    return this.config;
+        /** Await until connected to the server */
+        awaitConnection = () =>
+            new Promise<void>((resolve, _) => {
+                if (this.isConnected()) return resolve();
+                this.on("connect", () => resolve());
+            });
+        /** Await until authenticated*/
+        awaitAuth = () =>
+            new Promise<void>((resolve, _) => {
+                if (this.isAuthed()) return resolve();
+                this.ws?.on("message", async (data) => {
+                    let message = JSON.parse(data.toString());
+                    if (message.event === "auth success") {
+                        resolve();
+                    }
+                });
+            });
+
+        /** Power on the server */
+        start = () =>
+            new Promise<void>((resolve, reject) => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    return reject("Wrapdactyl - Server is not authorised");
+
+                const target_status = "running";
+                if (this.status === target_status) resolve();
+                this.on("status", (i) => {
+                    if (i === target_status) resolve();
                 });
 
-        auth = (token?: string) => {
-            if (token && this.ws) {
-                this.ws.send(JSON.stringify({ event: "auth", args: [token] }));
-                return true;
-            }
-            return false;
+                this.ws.send(
+                    JSON.stringify({ event: "set state", args: ["start"] })
+                );
+            });
+
+        /** Restart the server */
+        restart = () =>
+            new Promise<void>((resolve, reject) => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    return reject("Wrapdactyl - Server is not authorised");
+
+                const target_status = "running";
+                if (this.status === target_status) resolve();
+                this.on("status", (i) => {
+                    if (i === target_status) resolve();
+                });
+
+                this.ws.send(
+                    JSON.stringify({ event: "set state", args: ["start"] })
+                );
+            });
+
+        /** Power off the server */
+        stop = () =>
+            new Promise<void>((resolve, reject) => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    return reject("Wrapdactyl - Server is not authorised");
+                const target_status = "offline";
+                if (this.status === target_status) resolve();
+                this.on("status", (i) => {
+                    if (i === target_status) resolve();
+                });
+
+                this.ws.send(
+                    JSON.stringify({ event: "set state", args: ["stop"] })
+                );
+            });
+
+        /** Kill the server */
+        kill = () =>
+            new Promise<void>((resolve, reject) => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    return reject("Wrapdactyl - Server is not authorised");
+                const target_status = "offline";
+                if (this.status === target_status) resolve();
+                this.on("status", (i) => {
+                    if (i === target_status) resolve();
+                });
+
+                this.ws.send(
+                    JSON.stringify({ event: "set state", args: ["kill"] })
+                );
+            });
+
+        request = {
+            /** Request previous console data */
+            logs: () => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    throw new Error("Wrapdactyl - Server is not authorised");
+                this.ws.send(
+                    JSON.stringify({ event: "send logs", args: [null] })
+                );
+            },
+            /** Request hardware stats from the server */
+            stats: () => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    throw new Error("Wrapdactyl - Server is not authorised");
+                this.ws.send(
+                    JSON.stringify({ event: "send stats", args: [null] })
+                );
+            },
+        };
+
+        /** Send a command to the server trough console */
+        cmd = (s: string) => {
+            if (!this.ws || !this.isConnected() || !this.isAuthed())
+                throw new Error("Wrapdactyl - Server is not authorised");
+            this.ws.send(JSON.stringify({ event: "send command", args: [s] }));
         };
 
         private createWebSocket(config: WSConfiguration) {
@@ -112,6 +231,7 @@ export default (
 
                 switch (message.event) {
                     case "auth success":
+                        this.authed = true;
                         this.emit("authentication");
                         break;
                     case "daemon message":
@@ -136,7 +256,8 @@ export default (
                         this.emit("console", sanitizedArgs);
                         break;
                     case "status":
-                        this.emit("status", message.args);
+                        this.status = message.args[0];
+                        this.emit("status", message.args[0]);
                         break;
                     case "stats":
                         const parsedArgs = message.args.map((x: string) =>
@@ -164,6 +285,7 @@ export default (
                         break;
                     case "token expired":
                         this.emit("tokenExpired");
+                        this.disconnect();
                         break;
                     case "daemon error":
                         this.emit("daemonError", message.args);
@@ -172,11 +294,32 @@ export default (
                         this.emit("error", message.args);
                         break;
                     default:
+                        console.log("Wrapdactyl - Unhandled Message Event:");
                         console.log(message); // Testing stage
                         break;
                 }
             });
         }
+
+        private updateCredentials = () =>
+            wdctyl.client.servers
+                .websocketDetails(this.server_id)
+                .then((wsinfo) => {
+                    this.config = {
+                        token: wsinfo.data.token,
+                        socket: wsinfo.data.socket,
+                        origin: wdctyl.options.url,
+                    };
+                    return this.config;
+                });
+
+        private auth = (token?: string) => {
+            if (token && this.ws) {
+                this.ws.send(JSON.stringify({ event: "auth", args: [token] }));
+                return true;
+            }
+            return false;
+        };
 
         private handleTokenExpiring() {
             this.updateCredentials()

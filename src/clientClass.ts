@@ -17,15 +17,11 @@ import { WrapdactylBaseClass } from "./wrapdactyl";
 
 export class ClientClass extends WrapdactylBaseClass {
     client = {
-        /**
-         * @warn Types for this function wont be defined as new updates keeps updating them
-         */
+        /** @warn Types for this function wont be defined as new updates keeps updating them */
         permissions: () =>
             this.request<ClientPermissions>("/api/client/permissions"),
 
-        /**
-         * Client account Manager
-         */
+        /** Client account Manager*/
         account: {
             /**
              * @todo Implement up to date cache when webhooks will be added to pterodactyl (feature request)
@@ -103,9 +99,7 @@ export class ClientClass extends WrapdactylBaseClass {
                 }).then(() => {});
             },
 
-            /**
-             * Client API keys manager
-             */
+            /** Client API keys manager */
             apiKeys: {
                 fetchAll: () =>
                     this.request<ClientAccountApiKeysFetchAllResponse>(
@@ -179,9 +173,7 @@ export class ClientClass extends WrapdactylBaseClass {
             },
         },
 
-        /**
-         * Client Servers manager
-         */
+        /** Client Servers manager */
         servers: {
             fetch: <K extends keyof ClientServerFetchQry = never>(
                 id: string,
