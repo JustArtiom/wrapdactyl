@@ -165,10 +165,13 @@ test("Client requests", async () => {
         "f7184f95",
         {
             toDownload: "/testdir/DockerInstaller.exe",
-            destination: "./test/lmao",
+            destination: "./test/",
+            fileName: "lmao.exe",
         },
-        console.log
+        (stats) => {
+            console.log(stats);
+        }
     );
-    */
     console.log(res);
+    */
 }, 100000);

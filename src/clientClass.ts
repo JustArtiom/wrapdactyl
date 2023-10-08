@@ -472,23 +472,27 @@ export class ClientClass extends WrapdactylBaseClass {
                     obj: {
                         toDownload: string;
                         destination: string;
+                        fileName?: string; // Optional file name parameter
                     },
                     stats?: (stats: AxiosProgressEvent) => any
                 ) => {
-                    if (!id || !obj)
+                    if (!id || !obj) {
                         throw new Error(
                             "Wrapdactyl - Expected 2 arguments, but got " +
                                 (!id && !obj ? "0" : "1")
                         );
-                    if (!obj.toDownload || !obj.destination)
+                    }
+                    if (!obj.toDownload || !obj.destination) {
                         throw new Error(
                             "Wrapdactyl - Expected { toDownload: string, destination: string }"
                         );
+                    }
 
                     const token = await this.client.servers.files.download_url(
                         id,
                         obj.toDownload
                     );
+
                     return axios
                         .get(token.attributes.url, {
                             responseType: "arraybuffer",
@@ -497,42 +501,43 @@ export class ClientClass extends WrapdactylBaseClass {
                             },
                             onDownloadProgress: stats,
                         })
-                        .then(
-                            (response) =>
-                                new Promise<void>((resolve, reject) => {
-                                    const contentDisposition =
-                                        response.headers["content-disposition"];
-                                    let filename = "undefiend_name";
+                        .then((response) => {
+                            const contentDisposition =
+                                response.headers["content-disposition"];
+                            let filename = obj.fileName || "undefined_name";
 
-                                    if (contentDisposition) {
-                                        const match = /filename="(.+?)"/.exec(
-                                            contentDisposition
-                                        );
-                                        if (match) {
-                                            filename = match[1];
+                            if (contentDisposition && !obj.fileName) {
+                                const match = /filename="(.+?)"/.exec(
+                                    contentDisposition
+                                );
+                                if (match) {
+                                    filename = match[1];
+                                }
+                            }
+
+                            const filePath = path.join(
+                                obj.destination,
+                                filename
+                            );
+
+                            console.log(filePath);
+
+                            return new Promise<void>((resolve, reject) => {
+                                fs.writeFile(
+                                    filePath,
+                                    Buffer.from(response.data, "binary"),
+                                    (err) => {
+                                        if (err) {
+                                            reject(err);
+                                        } else {
+                                            resolve();
                                         }
                                     }
-
-                                    const localFilePath = path.join(
-                                        __dirname,
-                                        filename
-                                    );
-
-                                    const fileData = Buffer.from(
-                                        response.data,
-                                        "binary"
-                                    );
-                                    fs.writeFile(
-                                        localFilePath,
-                                        fileData,
-                                        (err) => {
-                                            if (err) reject();
-                                            else resolve();
-                                        }
-                                    );
-                                })
-                        );
+                                );
+                            });
+                        });
                 },
+
                 upload_url: (id: string) => {
                     if (!id)
                         throw new Error(
