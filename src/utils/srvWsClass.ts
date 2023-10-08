@@ -53,7 +53,9 @@ type ExtendedServerWebsocketManager = BaseServerWebsocketManager & {
         stats: () => void;
     };
 
-    cmd: (s: string) => void;
+    console: {
+        send: (s: string) => void;
+    };
 };
 
 export default (
@@ -185,7 +187,7 @@ export default (
             });
 
         request = {
-            /** Request previous console data */
+            /** Request history console data */
             logs: () => {
                 if (!this.ws || !this.isConnected() || !this.isAuthed())
                     throw new Error("Wrapdactyl - Server is not authorised");
@@ -203,11 +205,16 @@ export default (
             },
         };
 
-        /** Send a command to the server trough console */
-        cmd = (s: string) => {
-            if (!this.ws || !this.isConnected() || !this.isAuthed())
-                throw new Error("Wrapdactyl - Server is not authorised");
-            this.ws.send(JSON.stringify({ event: "send command", args: [s] }));
+        /** @todo Add cache system */
+        console = {
+            /** Send a command to the server trough console */
+            send: (s: string) => {
+                if (!this.ws || !this.isConnected() || !this.isAuthed())
+                    throw new Error("Wrapdactyl - Server is not authorised");
+                this.ws.send(
+                    JSON.stringify({ event: "send command", args: [s] })
+                );
+            },
         };
 
         private createWebSocket(config: WSConfiguration) {

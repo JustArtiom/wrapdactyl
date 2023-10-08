@@ -92,7 +92,7 @@ test("Client requests", async () => {
         // Stop the server. Await to wait untill the server is offline
         await server.stop();
         await server.kill();
-
+        server.console.send("echo \"Hello mom, i miss you\"")
         // Request console logs from the server
         // They are going to be logged in the "console" event
         server.request.logs();
@@ -100,5 +100,75 @@ test("Client requests", async () => {
         // They are going to be logged in the "stats" event
         server.request.stats();
     });
+    const res = await ptero.client.servers.resources("f7184f95");
+    const res = await ptero.client.servers.power("f7184f95", "stop");
+    const res = await ptero.client.servers.sendCommand(
+        "f7184f95",
+        "bash \"Hi mom\""
+    );
+    const res = await ptero.client.servers.rename("f7184f95", "new name uwu");
+    const res = await ptero.client.servers.files.fetch("f7184f95");
+    const res = await ptero.client.servers.files.content(
+        "f7184f95",
+        "/server.properties"
+    );
+    const res = await ptero.client.servers.files.download_url(
+        "f7184f95",
+        "/server.properties"
+    );
+    const res = await ptero.client.servers.files
+    .rename("f7184f95", {
+        root: "/",
+        files: [
+            {
+                from: "/server.properties",
+                to: "/server.propertiesssss",
+            },
+        ],
+    })
+    const res = await ptero.client.servers.files.copy(
+        "f7184f95",
+        "/server.properties"
+    );
+    const res = await ptero.client.servers.files.create("f7184f95", {
+        file: "/test",
+        data: "testtttt lmao",
+    });
+    const res = await ptero.client.servers.files.compress("f7184f95", {
+        root: "/",
+        files: ["test"],
+    });
+    const res = await ptero.client.servers.files.decompress("f7184f95", {
+        root: "/",
+        file: "archive-2023-10-08T210032Z.tar.gz",
+    });
+    const res = await ptero.client.servers.files.delete("f7184f95", {
+        root: "/",
+        files: ["archive-2023-10-08T210032Z.tar.gz"],
+    });
+    const res = await ptero.client.servers.files.createDir("f7184f95", {
+        root: "/",
+        name: "testdir",
+    });
+    // Test with big files
+    const res = await ptero.client.servers.files.upload(
+        "f7184f95",
+        {
+            toUpload: "./test/DockerInstaller.exe",
+            destination: "/testdir",
+        },
+        (stats) => {
+            console.log(stats);
+        }
+    );
+    const res = await ptero.client.servers.files.download(
+        "f7184f95",
+        {
+            toDownload: "/testdir/DockerInstaller.exe",
+            destination: "./test/lmao",
+        },
+        console.log
+    );
     */
-});
+    console.log(res);
+}, 100000);

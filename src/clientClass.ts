@@ -10,11 +10,19 @@ import type {
     ClientServerFetchAll,
     ClientServerFetchQry,
     ClientServerFetchResponse,
+    ClientServerFilesCompress,
+    ClientServerFilesSignedURL,
+    ClientServerFilesFetch,
+    ClientServerResourcesResponse,
 } from "./types/client";
 import { pageToPages } from "./utils";
 import { rQry } from "./utils/parsers";
 import srvWsClass from "./utils/srvWsClass";
 import { WrapdactylBaseClass } from "./wrapdactyl";
+import fs from "node:fs";
+import FormData from "form-data";
+import axios, { Axios, type AxiosProgressEvent } from "axios";
+import path from "path";
 
 export class ClientClass extends WrapdactylBaseClass {
     client = {
@@ -223,6 +231,358 @@ export class ClientClass extends WrapdactylBaseClass {
                 );
             },
             websocket: srvWsClass(this),
+            resources: (id: string) => {
+                if (!id)
+                    throw new Error(
+                        "Wrapdactyl - Expected 1 arguments, but got 0"
+                    );
+                return this.request<ClientServerResourcesResponse>(
+                    `/api/client/servers/${id}/resources`
+                );
+            },
+            sendCommand: (id: string, cmd: string) => {
+                if (!id || !cmd)
+                    throw new Error(
+                        "Wrapdactyl - Expected 2 arguments, but got " +
+                            (!id && !cmd ? "0" : "1")
+                    );
+                return this.request<void>({
+                    url: `/api/client/servers/${id}/command`,
+                    method: "POST",
+                    data: { command: cmd },
+                }).then(() => {});
+            },
+            power: (id: string, signal: string) => {
+                if (!id || !signal)
+                    throw new Error(
+                        "Wrapdactyl - Expected 2 arguments, but got " +
+                            (!id && !signal ? "0" : "1")
+                    );
+                if (!["start", "restart", "stop", "kill"].includes(signal))
+                    throw new Error(
+                        "Wrapdactyl - Invalid power signal. Extected start, restart, stop, kill, but got " +
+                            signal
+                    );
+                return this.request<void>({
+                    url: `/api/client/servers/${id}/power`,
+                    method: "POST",
+                    data: { signal },
+                }).then(() => {});
+            },
+            rename: (id: string, name: string) => {
+                if (!id || !name)
+                    throw new Error(
+                        "Wrapdactyl - Expected 2 arguments, but got " +
+                            (!id && !name ? "0" : "1")
+                    );
+                return this.request<void>({
+                    url: `/api/client/servers/${id}/settings/rename`,
+                    method: "POST",
+                    data: { name },
+                }).then(() => {
+                    const cahced_server = this.client.servers.cache.get(id);
+                    if (this.options.cache && cahced_server) {
+                        this.client.servers.cache.set(id, {
+                            ...cahced_server,
+                            name: name,
+                        });
+                    }
+                });
+            },
+            reinstall: (id: string) => {
+                if (!id)
+                    throw new Error(
+                        "Wrapdactyl - Expected 1 arguments, but got 0"
+                    );
+                return this.request<void>({
+                    url: `/api/client/servers/${id}/settings/reinstall`,
+                    method: "POST",
+                }).then(() => {});
+            },
+
+            /** File manager */
+            files: {
+                fetch: (id: string, dir: string = "/") => {
+                    if (!id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 1 arguments, but got 0"
+                        );
+                    return this.request<ClientServerFilesFetch>(
+                        `/api/client/servers/${id}/files/list?directory=${encodeURIComponent(
+                            dir
+                        )}`
+                    );
+                },
+                content: (id: string, file: string) => {
+                    if (!id || !file)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !file ? "0" : "1")
+                        );
+                    return this.request<string>(
+                        `/api/client/servers/${id}/files/contents?file=${encodeURIComponent(
+                            file
+                        )}`
+                    );
+                },
+                rename: (
+                    id: string,
+                    obj: { root: string; files: { from: string; to: string }[] }
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.root || !Array.isArray(obj.files))
+                        throw new Error(
+                            "Wrapdactyl - Expected { root: string, files: { from: string, to: string }[] }"
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/files/rename`,
+                        method: "PUT",
+                        data: obj,
+                    }).then(() => {});
+                },
+                copy: (id: string, file: string) => {
+                    if (!id || !file)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !file ? "0" : "1")
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/files/copy`,
+                        method: "POST",
+                        data: {
+                            location: file,
+                        },
+                    }).then(() => {});
+                },
+                create: (id: string, obj: { file: string; data: string }) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.file || !obj.data)
+                        throw new Error(
+                            "Wrapdactyl - 2nd argument (object) must have defined file and content as strings"
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/files/write?file=${encodeURIComponent(
+                            obj.file
+                        )}`,
+                        headers: {
+                            "Content-Type": "text/plain",
+                        },
+                        method: "POST",
+                        data: obj.data.toString(),
+                    });
+                },
+                compress: (
+                    id: string,
+                    obj: { root: string; files: string[] }
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.root || !Array.isArray(obj.files))
+                        throw new Error(
+                            "Wrapdactyl - Expected { root: string, files: string[] }"
+                        );
+                    return this.request<ClientServerFilesCompress>({
+                        url: `/api/client/servers/${id}/files/compress`,
+                        method: "POST",
+                        data: obj,
+                    });
+                },
+                decompress: (
+                    id: string,
+                    obj: { root: string; file: string }
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.root || !obj.file)
+                        throw new Error(
+                            "Wrapdactyl - Expected { root: string, file: string }"
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/files/decompress`,
+                        method: "POST",
+                        data: obj,
+                    }).then(() => {});
+                },
+                delete: (
+                    id: string,
+                    obj: { root: string; files: string[] }
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.root || !Array.isArray(obj.files))
+                        throw new Error(
+                            "Wrapdactyl - Expected { root: string, files: { from: string, to: string }[] }"
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/files/delete`,
+                        method: "POST",
+                        data: obj,
+                    }).then(() => {});
+                },
+                createDir: (
+                    id: string,
+                    obj: { root: string; name: string }
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.root || !obj.name)
+                        throw new Error(
+                            "Wrapdactyl - Expected { root: string, name: string }"
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/files/create-folder`,
+                        method: "POST",
+                        data: obj,
+                    }).then(() => {});
+                },
+                download_url: (id: string, file: string) => {
+                    if (!id || !file)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !file ? "0" : "1")
+                        );
+                    return this.request<ClientServerFilesSignedURL>(
+                        `/api/client/servers/${id}/files/download?file=${encodeURIComponent(
+                            file
+                        )}`
+                    );
+                },
+                download: async (
+                    id: string,
+                    obj: {
+                        toDownload: string;
+                        destination: string;
+                    },
+                    stats?: (stats: AxiosProgressEvent) => any
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.toDownload || !obj.destination)
+                        throw new Error(
+                            "Wrapdactyl - Expected { toDownload: string, destination: string }"
+                        );
+
+                    const token = await this.client.servers.files.download_url(
+                        id,
+                        obj.toDownload
+                    );
+                    return axios
+                        .get(token.attributes.url, {
+                            responseType: "arraybuffer",
+                            headers: {
+                                "User-Agent": this.options.userAgent,
+                            },
+                            onDownloadProgress: stats,
+                        })
+                        .then(
+                            (response) =>
+                                new Promise<void>((resolve, reject) => {
+                                    const contentDisposition =
+                                        response.headers["content-disposition"];
+                                    let filename = "undefiend_name";
+
+                                    if (contentDisposition) {
+                                        const match = /filename="(.+?)"/.exec(
+                                            contentDisposition
+                                        );
+                                        if (match) {
+                                            filename = match[1];
+                                        }
+                                    }
+
+                                    const localFilePath = path.join(
+                                        __dirname,
+                                        filename
+                                    );
+
+                                    const fileData = Buffer.from(
+                                        response.data,
+                                        "binary"
+                                    );
+                                    fs.writeFile(
+                                        localFilePath,
+                                        fileData,
+                                        (err) => {
+                                            if (err) reject();
+                                            else resolve();
+                                        }
+                                    );
+                                })
+                        );
+                },
+                upload_url: (id: string) => {
+                    if (!id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 1 arguments, but got 0"
+                        );
+                    return this.request<ClientServerFilesSignedURL>(
+                        `/api/client/servers/${id}/files/upload`
+                    );
+                },
+                upload: async (
+                    id: string,
+                    obj: { toUpload: string; destination?: string },
+                    stats?: (stats: AxiosProgressEvent) => any
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.toUpload)
+                        throw new Error(
+                            "Wrapdactyl - Expected { toUpload: string, destination?: string }"
+                        );
+                    const token = await this.client.servers.files.upload_url(
+                        id
+                    );
+
+                    const fileStream = fs.createReadStream(obj.toUpload);
+                    const form = new FormData();
+                    form.append("files", fileStream);
+
+                    return axios
+                        .post<void>(
+                            `${token.attributes.url}&directory=${
+                                obj.destination
+                                    ? encodeURIComponent(obj.destination)
+                                    : "/"
+                            }`,
+                            form,
+                            {
+                                headers: {
+                                    ...form.getHeaders(),
+                                    "User-Agent": this.options.userAgent,
+                                },
+                                onUploadProgress: stats,
+                            }
+                        )
+                        .then(() => {});
+                },
+            },
         },
     };
 }

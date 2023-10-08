@@ -259,3 +259,39 @@ export interface ClientAccountServerWebsocketDetails {
         socket: string;
     };
 }
+
+export interface ClientServerResourcesResponse {
+    object: string;
+    attributes: {
+        current_state: string;
+        is_suspended: boolean;
+        resources: {
+            memory_bytes: number;
+            cpu_absolute: number;
+            disk_bytes: number;
+            network_rx_bytes: number;
+            network_tx_bytes: number;
+            uptime: number;
+        };
+    };
+}
+
+export interface ClientServerFilesFetch {
+    object: "list";
+    data: {
+        object: "file_object";
+        attributes: ClientServerFileObject;
+    }[];
+}
+
+export interface ClientServerFilesSignedURL {
+    object: "signed_url";
+    attributes: {
+        url: string;
+    };
+}
+
+export interface ClientServerFilesCompress {
+    object: "file_object";
+    attributes: ClientServerFileObject;
+}
