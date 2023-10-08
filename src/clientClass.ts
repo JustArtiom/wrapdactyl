@@ -588,6 +588,24 @@ export class ClientClass extends WrapdactylBaseClass {
                         .then(() => {});
                 },
             },
+
+            /** @todo */
+            databases: {},
+
+            /** @todo */
+            schedules: {},
+
+            /** @todo */
+            network: {},
+
+            /** @todo */
+            users: {},
+
+            /** @todo */
+            backups: {},
+
+            /** @todo */
+            startup: {},
         },
     };
 }
