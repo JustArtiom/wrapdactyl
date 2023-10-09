@@ -295,3 +295,16 @@ export interface ClientServerFilesCompress {
     object: "file_object";
     attributes: ClientServerFileObject;
 }
+
+export interface ClientServerDatabaseFetchAll<T> {
+    object: "list";
+    data: {
+        object: "server_database";
+        attributes: ClientServerDatabase<T>;
+    }[];
+}
+
+export interface ClientServerDatabaseCreate {
+    object: "server_database";
+    attributes: ClientServerDatabase<ClientServerDatabaseRelationshipsPassword>;
+}

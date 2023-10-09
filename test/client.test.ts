@@ -107,7 +107,7 @@ test("Client requests", async () => {
         "bash \"Hi mom\""
     );
     const res = await ptero.client.servers.rename("f7184f95", "new name uwu");
-    const res = await ptero.client.servers.files.fetch("f7184f95");
+    const res = await ptero.client.servers.files.fetchAll("f7184f95");
     const res = await ptero.client.servers.files.content(
         "f7184f95",
         "/server.properties"
@@ -172,7 +172,21 @@ test("Client requests", async () => {
             console.log(stats);
         }
     );
+    const res = await ptero.client.servers.databases.fetchAll("f7184f95", [
+        "password",
+    ]);
+    const res = await ptero.client.servers.databases.create("f7184f95", {
+        database: "testttt",
+        remote: "%",
+    });
+    const res = await ptero.client.servers.databases.rotatePassword(
+        "f7184f95",
+        "NEZy4rwB"
+    );
+    const res = await ptero.client.servers.databases.delete(
+        "f7184f95",
+        "NEZy4rwB"
+    );
     console.log(res);
-    
-    */
+        */
 }, 100000);

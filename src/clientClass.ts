@@ -14,6 +14,9 @@ import type {
     ClientServerFilesSignedURL,
     ClientServerFilesFetch,
     ClientServerResourcesResponse,
+    ClientServerDatabaseFetchAll,
+    ClientServerDatabaseRelationshipsPassword,
+    ClientServerDatabaseCreate,
 } from "./types/client";
 import { pageToPages } from "./utils";
 import { rQry } from "./utils/parsers";
@@ -302,7 +305,7 @@ export class ClientClass extends WrapdactylBaseClass {
 
             /** File manager */
             files: {
-                fetch: (id: string, dir: string = "/") => {
+                fetchAll: (id: string, dir: string = "/") => {
                     if (!id)
                         throw new Error(
                             "Wrapdactyl - Expected 1 arguments, but got 0"
@@ -589,7 +592,65 @@ export class ClientClass extends WrapdactylBaseClass {
             },
 
             /** @todo */
-            databases: {},
+            databases: {
+                fetchAll: <
+                    K extends keyof ClientServerDatabaseRelationshipsPassword = never
+                >(
+                    id: string,
+                    qry?: K[]
+                ) => {
+                    if (!id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 1 arguments, but got 0"
+                        );
+                    return this.request<
+                        ClientServerDatabaseFetchAll<
+                            Pick<ClientServerDatabaseRelationshipsPassword, K>
+                        >
+                    >(`/api/client/servers/${id}/databases${rQry(qry)}`);
+                },
+                create: (
+                    id: string,
+                    obj: { database: string; remote: string }
+                ) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (!obj.database || !obj.remote)
+                        throw new Error(
+                            "Wrapdactyl - obj expected to be { database: string, remote: string }"
+                        );
+                    return this.request<ClientServerDatabaseCreate>({
+                        url: `/api/client/servers/${id}/databases`,
+                        method: "POST",
+                        data: obj,
+                    });
+                },
+                rotatePassword: (id: string, db_id: string) => {
+                    if (!id || !db_id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !db_id ? "0" : "1")
+                        );
+                    return this.request<ClientServerDatabaseCreate>({
+                        url: `/api/client/servers/${id}/databases/${db_id}/rotate-password`,
+                        method: "POST",
+                    });
+                },
+                delete: (id: string, db_id: string) => {
+                    if (!id || !db_id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !db_id ? "0" : "1")
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/databases/${db_id}`,
+                        method: "DELETE",
+                    }).then(() => {});
+                },
+            },
 
             /** @todo */
             schedules: {},
