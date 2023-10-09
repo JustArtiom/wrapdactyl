@@ -154,8 +154,8 @@ test("Client requests", async () => {
     const res = await ptero.client.servers.files.upload(
         "f7184f95",
         {
-            toUpload: "./test/DockerInstaller.exe",
-            destination: "/testdir",
+            fileToUpload: "./test/DockerInstaller.exe",
+            uploadDestination: "/testdir",
         },
         (stats) => {
             console.log(stats);
@@ -164,9 +164,9 @@ test("Client requests", async () => {
     const res = await ptero.client.servers.files.download(
         "f7184f95",
         {
-            toDownload: "/testdir/DockerInstaller.exe",
-            destination: "./test/",
-            fileName: "lmao.exe",
+            fileToDownload: "/testdir/DockerInstaller.exe",
+            downloadDestination: "./test/",
+            downloadedFileName: "lmao.exe",
         },
         (stats) => {
             console.log(stats);

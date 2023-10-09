@@ -470,9 +470,9 @@ export class ClientClass extends WrapdactylBaseClass {
                 download: async (
                     id: string,
                     obj: {
-                        toDownload: string;
-                        destination: string;
-                        fileName?: string; // Optional file name parameter
+                        fileToDownload: string;
+                        downloadDestination: string;
+                        downloadedFileName?: string; // Optional file name parameter
                     },
                     stats?: (stats: AxiosProgressEvent) => any
                 ) => {
@@ -482,7 +482,7 @@ export class ClientClass extends WrapdactylBaseClass {
                                 (!id && !obj ? "0" : "1")
                         );
                     }
-                    if (!obj.toDownload || !obj.destination) {
+                    if (!obj.fileToDownload || !obj.downloadDestination) {
                         throw new Error(
                             "Wrapdactyl - Expected { toDownload: string, destination: string }"
                         );
@@ -490,7 +490,7 @@ export class ClientClass extends WrapdactylBaseClass {
 
                     const token = await this.client.servers.files.download_url(
                         id,
-                        obj.toDownload
+                        obj.fileToDownload
                     );
 
                     return axios
@@ -504,9 +504,10 @@ export class ClientClass extends WrapdactylBaseClass {
                         .then((response) => {
                             const contentDisposition =
                                 response.headers["content-disposition"];
-                            let filename = obj.fileName || "undefined_name";
+                            let filename =
+                                obj.downloadedFileName || "undefined_name";
 
-                            if (contentDisposition && !obj.fileName) {
+                            if (contentDisposition && !obj.downloadedFileName) {
                                 const match = /filename="(.+?)"/.exec(
                                     contentDisposition
                                 );
@@ -516,11 +517,9 @@ export class ClientClass extends WrapdactylBaseClass {
                             }
 
                             const filePath = path.join(
-                                obj.destination,
+                                obj.downloadDestination,
                                 filename
                             );
-
-                            console.log(filePath);
 
                             return new Promise<void>((resolve, reject) => {
                                 fs.writeFile(
@@ -549,7 +548,7 @@ export class ClientClass extends WrapdactylBaseClass {
                 },
                 upload: async (
                     id: string,
-                    obj: { toUpload: string; destination?: string },
+                    obj: { fileToUpload: string; uploadDestination?: string },
                     stats?: (stats: AxiosProgressEvent) => any
                 ) => {
                     if (!id || !obj)
@@ -557,7 +556,7 @@ export class ClientClass extends WrapdactylBaseClass {
                             "Wrapdactyl - Expected 2 arguments, but got " +
                                 (!id && !obj ? "0" : "1")
                         );
-                    if (!obj.toUpload)
+                    if (!obj.fileToUpload)
                         throw new Error(
                             "Wrapdactyl - Expected { toUpload: string, destination?: string }"
                         );
@@ -565,15 +564,15 @@ export class ClientClass extends WrapdactylBaseClass {
                         id
                     );
 
-                    const fileStream = fs.createReadStream(obj.toUpload);
+                    const fileStream = fs.createReadStream(obj.fileToUpload);
                     const form = new FormData();
                     form.append("files", fileStream);
 
                     return axios
                         .post<void>(
                             `${token.attributes.url}&directory=${
-                                obj.destination
-                                    ? encodeURIComponent(obj.destination)
+                                obj.uploadDestination
+                                    ? encodeURIComponent(obj.uploadDestination)
                                     : "/"
                             }`,
                             form,
