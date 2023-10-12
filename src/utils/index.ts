@@ -1,6 +1,5 @@
 import type {
     ClientServer,
-    ClientServerFetchAll,
     ClientServerFetchQry,
     PaginatingMeta,
 } from "../types/client";

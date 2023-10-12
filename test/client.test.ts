@@ -191,6 +191,52 @@ test("Client requests", async () => {
         "f7184f95",
         "NEZy4rwB"
     );
+    const res = await ptero.client.servers.schedules.fetchAll("f7184f95");
+    const res = await ptero.client.servers.schedules.create("f7184f95", {
+        day_of_month: "*",
+        day_of_week: "*",
+        hour: "*",
+        is_active: true,
+        minute: "*\/5",
+        month: "*",
+        name: "sfdfdsdf",
+        only_when_online: false,
+    });
+    const res = await ptero.client.servers.schedules.update("f7184f95", "8", {
+        day_of_month: "*",
+        day_of_week: "*",
+        hour: "*",
+        is_active: true,
+        minute: "*\/5",
+        month: "*",
+        name: "different name",
+        only_when_online: false,
+    });
+    const res = await ptero.client.servers.schedules.delete("f7184f95", "8");
+    const res = await ptero.client.servers.schedules.task.create(
+        "f7184f95",
+        "9",
+        {
+            action: "command",
+            payload: "Hello world",
+            time_offset: "0",
+        }
+    );
+    const res = await ptero.client.servers.schedules.task.update(
+        "f7184f95",
+        "9",
+        "8",
+        {
+            action: "command",
+            payload: "Hello world",
+            time_offset: "0",
+        }
+    );
+    const res = await ptero.client.servers.schedules.task.delete(
+        "f7184f95",
+        "9",
+        "8"
+    );
     console.log(res);
     */
 }, 10000000);

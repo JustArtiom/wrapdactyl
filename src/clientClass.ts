@@ -17,6 +17,12 @@ import type {
     ClientServerDatabaseFetchAll,
     ClientServerDatabaseRelationshipsPassword,
     ClientServerDatabaseCreate,
+    ClientServerSchedule,
+    ClientServerScheduleFetchAll,
+    ClientServerScheduleFetch,
+    ClientServerScheduleParams,
+    ClientServerScheduleTaskFetch,
+    ClientServerScheduleTaskParams,
 } from "./types/client";
 import { pageToPages } from "./utils";
 import { rQry } from "./utils/parsers";
@@ -591,7 +597,7 @@ export class ClientClass extends WrapdactylBaseClass {
                 },
             },
 
-            /** @todo */
+            /** Database manager */
             databases: {
                 fetchAll: <
                     K extends keyof ClientServerDatabaseRelationshipsPassword = never
@@ -653,7 +659,138 @@ export class ClientClass extends WrapdactylBaseClass {
             },
 
             /** @todo */
-            schedules: {},
+            schedules: {
+                fetchAll: (id: string) => {
+                    if (!id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 1 arguments, but got 0"
+                        );
+                    return this.request<ClientServerScheduleFetchAll>(
+                        `/api/client/servers/${id}/schedules`
+                    );
+                },
+                fetch: (id: string, schedule_id: string | number) => {
+                    if (!id || !schedule_id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !schedule_id ? "0" : "1")
+                        );
+                    return this.request<ClientServerScheduleFetch>(
+                        `/api/client/servers/${id}/schedules/${schedule_id}`
+                    );
+                },
+                create: (id: string, obj: ClientServerScheduleParams) => {
+                    if (!id || !obj)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !obj ? "0" : "1")
+                        );
+                    if (
+                        !obj.name ||
+                        !obj.minute ||
+                        !obj.hour ||
+                        !obj.day_of_month ||
+                        !obj.day_of_week
+                    )
+                        throw new Error(
+                            "Wrapdactyl - obj expected to be { name: string, is_active?: boolean, minute: string, hour: string, day_of_week: string, day_of_month: string }"
+                        );
+                    return this.request<ClientServerScheduleFetch>({
+                        url: `/api/client/servers/${id}/schedules`,
+                        method: "POST",
+                        data: obj,
+                    });
+                },
+                update: (
+                    id: string,
+                    schedule_id: string | number,
+                    obj: ClientServerScheduleParams
+                ) => {
+                    if (!id || !obj || !schedule_id)
+                        throw new Error("Wrapdactyl - Expected 3 arguments");
+                    if (
+                        !obj.name ||
+                        !obj.minute ||
+                        !obj.hour ||
+                        !obj.day_of_month ||
+                        !obj.day_of_week
+                    )
+                        throw new Error(
+                            "Wrapdactyl - obj expected to be { name: string, is_active?: boolean, minute: string, hour: string, day_of_week: string, day_of_month: string }"
+                        );
+                    return this.request<ClientServerScheduleFetch>({
+                        url: `/api/client/servers/${id}/schedules/${schedule_id}`,
+                        method: "POST",
+                        data: obj,
+                    });
+                },
+                delete: (id: string, schedule_id: string | number) => {
+                    if (!id || !schedule_id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 2 arguments, but got " +
+                                (!id && !schedule_id ? "0" : "1")
+                        );
+                    return this.request<void>({
+                        url: `/api/client/servers/${id}/schedules/${schedule_id}`,
+                        method: "DELETE",
+                    }).then(() => {});
+                },
+                task: {
+                    create: (
+                        id: string,
+                        schedule_id: string,
+                        obj: ClientServerScheduleTaskParams
+                    ) => {
+                        if (!id || !obj || !schedule_id)
+                            throw new Error(
+                                "Wrapdactyl - Expected 3 arguments"
+                            );
+                        if (!obj.action || !obj.payload || !obj.time_offset)
+                            throw new Error(
+                                "Wrapdactyl - obj expected to be { action: string, payload: string, time_offset: string }"
+                            );
+                        return this.request<ClientServerScheduleTaskFetch>({
+                            url: `/api/client/servers/${id}/schedules/${schedule_id}/tasks`,
+                            method: "POST",
+                            data: obj,
+                        });
+                    },
+                    update: (
+                        id: string,
+                        schedule_id: string,
+                        task_id: string,
+                        obj: ClientServerScheduleTaskParams
+                    ) => {
+                        if (!id || !obj || !schedule_id || !task_id)
+                            throw new Error(
+                                "Wrapdactyl - Expected 4 arguments"
+                            );
+                        if (!obj.action || !obj.payload || !obj.time_offset)
+                            throw new Error(
+                                "Wrapdactyl - obj expected to be { action: string, payload: string, time_offset: string }"
+                            );
+                        return this.request<ClientServerScheduleTaskFetch>({
+                            url: `/api/client/servers/${id}/schedules/${schedule_id}/tasks/${task_id}`,
+                            method: "POST",
+                            data: obj,
+                        });
+                    },
+                    delete: (
+                        id: string,
+                        schedule_id: string,
+                        task_id: string
+                    ) => {
+                        if (!id || !task_id || !schedule_id)
+                            throw new Error(
+                                "Wrapdactyl - Expected 3 arguments"
+                            );
+                        return this.request<void>({
+                            url: `/api/client/servers/${id}/schedules/${schedule_id}/tasks/${task_id}`,
+                            method: "DELETE",
+                        }).then(() => {});
+                    },
+                },
+            },
 
             /** @todo */
             network: {},

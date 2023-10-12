@@ -186,6 +186,61 @@ export interface ClientPermissions {
     };
 }
 
+export interface ClientServerSchedule {
+    id: number;
+    name: string;
+    cron: {
+        day_of_week: string;
+        day_of_month: string;
+        hour: string;
+        minute: string;
+    };
+    is_active: boolean;
+    is_processing: boolean;
+    last_run_at: null | Date;
+    next_run_at: null | Date;
+    created_at: null | Date;
+    updated_at: null | Date;
+    relationships: {
+        tasks: {
+            object: string;
+            data: {
+                object: string;
+                attributes: ClientServerScheduleTask;
+            }[];
+        };
+    };
+}
+
+export interface ClientServerScheduleTask {
+    id: number;
+    schedule_id: 1;
+    action: string;
+    payload: string;
+    time_offset: number;
+    is_queued: false;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export interface ClientServerScheduleParams {
+    name: string;
+    is_active?: boolean;
+    minute: string;
+    hour: string;
+    month: string;
+    day_of_week: string;
+    day_of_month: string;
+    only_when_online: boolean;
+}
+
+export interface ClientServerScheduleTaskParams {
+    action: string;
+    payload: string;
+    time_offset: string;
+    continue_on_failure?: boolean;
+}
+
 export interface ClientAccountFetch {
     object: "user";
     attributes: ClientAccount;
@@ -307,4 +362,29 @@ export interface ClientServerDatabaseFetchAll<T> {
 export interface ClientServerDatabaseCreate {
     object: "server_database";
     attributes: ClientServerDatabase<ClientServerDatabaseRelationshipsPassword>;
+}
+
+export interface ClientServerScheduleFetchAll {
+    object: string;
+    data: { object: string; attributes: ClientServerSchedule }[];
+}
+
+export interface ClientServerScheduleFetch {
+    object: string;
+    attributes: ClientServerSchedule;
+}
+
+export interface ClientServerScheduleTaskFetch {
+    object: string;
+    attributes: {
+        id: number;
+        sequence_id: number;
+        action: string;
+        payload: string;
+        time_offset: number;
+        continue_on_failure: boolean;
+        is_queued: boolean;
+        created_at: Date;
+        updated_at: Date;
+    };
 }
