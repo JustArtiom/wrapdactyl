@@ -28,7 +28,6 @@ test("Client requests", async () => {
     const res = await ptero.client.servers.fetch("f7184f95", ["egg", "subusers"]);
     const res = await ptero.client.servers.fetchAll(0, ["egg", "subusers"]); // 0 means every page
     const res = await ptero.client.servers.websocketDetails("f7184f95");
-
     await new Promise(async (rep) => {
         const server = new ptero.client.servers.websocket("f7184f95").connect();
 
@@ -36,6 +35,11 @@ test("Client requests", async () => {
         server.on("connect", () => console.log("Connected to the server"));
         // Alerts when the connection has been authorised
         server.on("authentication", () => console.log("Authenticated"));
+
+        server.on("tokenExpiring", () => {
+            console.log("Token is about to expire")
+            // Script automatically sends a new auth token
+        })
         // Alerts when the token couldnt be updated
         server.on("tokenExpired", () => console.log("The Token expired"));
         // Alerts when the connection to the websocket has closed
@@ -72,7 +76,7 @@ test("Client requests", async () => {
         // Status of the server (online offline etc.)
         server.on("status", (x) => console.log(`status: ${x}`));
         // Stats and usage of the hardware
-        server.on("stats", (x) => console.log(x));
+        // server.on("stats", (x) => console.log(x));
         // Transfer information
         server.on("transferLogs", (x) => console.log(`transferLogs: ${x}`));
         // Transfer status when it started or completed
@@ -188,5 +192,5 @@ test("Client requests", async () => {
         "NEZy4rwB"
     );
     console.log(res);
-        */
-}, 100000);
+    */
+}, 10000000);

@@ -45,6 +45,7 @@ export interface serverWebsocketManagerEvents {
     authentication: () => any;
     error: (data: Error) => any;
     disconnect: () => any;
+    tokenExpiring: () => any;
     tokenExpired: () => any;
     daemonMessage: (message: string) => any;
     installMessage: (message: string) => any;

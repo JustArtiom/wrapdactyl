@@ -288,6 +288,7 @@ export default (
                         this.emit("deleted");
                         break;
                     case "token expiring":
+                        this.emit("tokenExpiring")
                         this.handleTokenExpiring();
                         break;
                     case "token expired":
