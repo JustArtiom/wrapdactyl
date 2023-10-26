@@ -23,6 +23,8 @@ import type {
     ClientServerScheduleParams,
     ClientServerScheduleTaskFetch,
     ClientServerScheduleTaskParams,
+    ClientServerAllocationsFetchAll,
+    ClientServerAllocationsAssign,
 } from "./types/client";
 import { pageToPages } from "./utils";
 import { rQry } from "./utils/parsers";
@@ -658,7 +660,7 @@ export class ClientClass extends WrapdactylBaseClass {
                 },
             },
 
-            /** @todo */
+            /** Server Schedules manager */
             schedules: {
                 fetchAll: (id: string) => {
                     if (!id)
@@ -793,7 +795,27 @@ export class ClientClass extends WrapdactylBaseClass {
             },
 
             /** @todo */
-            network: {},
+            allocations: {
+                fetchAll: (id: string) => {
+                    if (!id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 1 arguments, but got 0"
+                        );
+                    return this.request<ClientServerAllocationsFetchAll>(
+                        `/api/client/servers/${id}/network/allocations`
+                    );
+                },
+                assign: (id: string) => {
+                    if (!id)
+                        throw new Error(
+                            "Wrapdactyl - Expected 1 arguments, but got 0"
+                        );
+                    return this.request<ClientServerAllocationsAssign>({
+                        url: `/api/client/servers/${id}/network/allocations`,
+                        method: "POST",
+                    });
+                },
+            },
 
             /** @todo */
             users: {},

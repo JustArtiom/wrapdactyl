@@ -237,6 +237,8 @@ test("Client requests", async () => {
         "9",
         "8"
     );
+    const res = await ptero.client.servers.allocations.fetchAll("f7184f95");
+    const res = await ptero.client.servers.allocations.assign("f7184f95");
     console.log(res);
     */
 }, 10000000);

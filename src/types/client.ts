@@ -388,3 +388,16 @@ export interface ClientServerScheduleTaskFetch {
         updated_at: Date;
     };
 }
+
+export interface ClientServerAllocationsFetchAll {
+    object: string;
+    data: {
+        object: string;
+        attributes: ClientAllocation;
+    }[];
+}
+
+export interface ClientServerAllocationsAssign {
+    object: string;
+    attributes: ClientAllocation;
+}
